@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "401540278133",
+    "firebase_url": "https://vongcat-33b92.firebaseio.com",
+    "project_id": "vongcat-33b92",
+    "storage_bucket": "vongcat-33b92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401540278133:android:ffe135ec986f6fd1a5953c",
+        "android_client_info": {
+          "package_name": "com.example.vongcat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401540278133-jj73qchv3gt3pcrem64pldt69ruvm4pp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5j7g_rLt2UhwiM-zka5n5WTKjwrR0GLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401540278133-jj73qchv3gt3pcrem64pldt69ruvm4pp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -33,12 +33,9 @@ public class Adapter extends ArrayAdapter<Item>  {
             ListTable.getInstance(objects).setOnListTableChange(new ListTable.OnListTableChange() {
                 @Override
                 public void callBack() {
-
-                    Log.d("htl","callBack");
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-
                         notifyDataSetChanged();
                         }
                     });

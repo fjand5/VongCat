@@ -4,8 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
+import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.View.TableAdapter.Item;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,28 +41,31 @@ public class ListTable{
     }
 
     private ListTable(List<Item> objects) {
+    ListTableFirebase.getInstance();
+    listItem = objects;
 
-        listItem = objects;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    listItem.add(new Item("ten",123));
-                    onListTableChange.callBack();
-
-
-
-                }
-
-
-            }
-        }).start();
     }
+    public void updateData(JSONArray listTable){
+
+        outer: for (int i=0; i < listTable.length(); i++) {
+            try {
+                String name = listTable.get(i).toString();
+
+                for (Item table:listItem) {
+                    if(table.getName().equals(name)){
+                        continue outer;
+                    }
+                }
+                listItem.add(new Item(name,0));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        onListTableChange.callBack();
+
+    };
     public interface OnListTableChange{
         void callBack();
     }

@@ -7,6 +7,8 @@ import android.widget.ListView;
 import com.example.vongcat.R;
 import com.example.vongcat.View.TableAdapter.Adapter;
 import com.example.vongcat.View.TableAdapter.Item;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initView();
     }
 
