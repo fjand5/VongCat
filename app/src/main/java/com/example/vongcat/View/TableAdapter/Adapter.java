@@ -57,7 +57,6 @@ public class Adapter extends ArrayAdapter<Item>  {
         TextView nameTableTxt=v.findViewById(R.id.nameTableTxt);
         TextView toltalTableTxt=v.findViewById(R.id.toltalTableTxt);
 
-
         nameTableTxt.setText(ListTable.getInstance().getListItem().get(position).name);
         toltalTableTxt.setText(String.valueOf(ListTable.getInstance().getListItem().get(position).total));
         return v;

@@ -62,8 +62,8 @@ public class ListTable{
                 e.printStackTrace();
             }
         }
-
-        onListTableChange.callBack();
+        if(onListTableChange != null)
+            onListTableChange.callBack();
 
     };
     public interface OnListTableChange{
