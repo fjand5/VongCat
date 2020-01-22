@@ -2,43 +2,63 @@ package com.example.vongcat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 
-import com.example.vongcat.Presenter.ListBeverage;
+import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.R;
-import com.example.vongcat.View.TableAdapter.Adapter;
-import com.example.vongcat.View.TableAdapter.Item;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.vongcat.View.OderAdapter.Adapter;
+import com.example.vongcat.View.OderAdapter.Item;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView tableLsv;
+    ListView oderLsv;
     Adapter adapterTable;
-    List<Item> itemTable;
+    List<Item> itemOder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         initView();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name","Cafe đen");
+            jsonObject.put("table","Bàn 1");
+            jsonObject.put("value",9000);
+            jsonObject.put("isPaid",false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ListOderFirebase.getInstance().addOder(jsonObject);
+
+        jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name","Cafe sữa");
+            jsonObject.put("table","Bàn 2");
+            jsonObject.put("value",10000);
+            jsonObject.put("isPaid",false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ListOderFirebase.getInstance().addOder(jsonObject);
 
 
 
     }
 
     private void initView() {
-        tableLsv = findViewById(R.id.tableLsv);
+        oderLsv = findViewById(R.id.oderLsv);
 
-        itemTable = new ArrayList<>();
-        adapterTable = new Adapter(this,R.layout.item_table,itemTable);
-        tableLsv.setAdapter(adapterTable);
+        itemOder = new ArrayList<>();
+        adapterTable = new Adapter(this,R.layout.item_oder,itemOder);
+        oderLsv.setAdapter(adapterTable);
     }
 }

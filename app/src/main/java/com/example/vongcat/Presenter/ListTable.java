@@ -1,72 +1,56 @@
 package com.example.vongcat.Presenter;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-
 import com.example.vongcat.Model.ListTableFirebase;
-import com.example.vongcat.View.TableAdapter.Item;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.vongcat.View.OderAdapter.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ListTable{
     private static ListTable ourInstance;
 
     OnListTableChange onListTableChange;
 
-    List<Item> listItem;
+    Set<String> listItem;
     public void setOnListTableChange(OnListTableChange onListTableChange) {
         this.onListTableChange = onListTableChange;
     }
 
-    public static ListTable getInstance(List<Item> objects) {
+    public static ListTable getInstance(List<String> objects) {
         if (ourInstance == null)
-            ourInstance = new ListTable(objects);
+            ourInstance = new ListTable();
         return ourInstance;
     }
     public static ListTable getInstance() {
         return ourInstance;
     }
 
-    public List<Item> getListItem() {
+    public Set<String> getListItem() {
         return listItem;
     }
 
-    private ListTable(List<Item> objects) {
+    private ListTable() {
     ListTableFirebase.getInstance();
-    listItem = objects;
 
     }
     public void updateData(JSONArray listTable){
 
-        outer: for (int i=0; i < listTable.length(); i++) {
+       for (int i=0; i < listTable.length(); i++) {
             try {
                 String name = listTable.get(i).toString();
-
-                for (Item table:listItem) {
-                    if(table.getName().equals(name)){
-                        continue outer;
-                    }
-                }
-                listItem.add(new Item(name,0));
-
+                listItem.add(name);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         if(onListTableChange != null)
-            onListTableChange.callBack();
+            onListTableChange.callBack(listItem);
 
     };
     public interface OnListTableChange{
-        void callBack();
+        void callBack(Set<String> listItem);
     }
 }

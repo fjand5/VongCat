@@ -1,0 +1,65 @@
+package com.example.vongcat.Model;
+
+import android.util.Log;
+
+import com.example.vongcat.Presenter.ListOder;
+import com.example.vongcat.Presenter.ListTable;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class ListOderFirebase {
+    DatabaseReference myRef;
+    private static  ListOderFirebase ourInstance;
+
+    static public ListOderFirebase getInstance() {
+        if(ourInstance == null)
+            ourInstance = new ListOderFirebase();
+        return ourInstance;
+    }
+
+    public ListOderFirebase() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("ListOder");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+                DataSnapshot dataSnapshotChild = dataSnapshot.child(currentDate);
+                String tmp="{}";
+                if(dataSnapshotChild.getValue() != null)
+                    tmp = dataSnapshotChild.getValue().toString();
+                try {
+                    JSONObject jsonObject = new JSONObject(tmp);
+                    ListOder.getInstance().updateData(jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void addOder(JSONObject oder){
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        myRef.child(currentDate).push().setValue(oder.toString());
+    }
+    public void removeOder(JSONObject oder){
+
+    }
+}

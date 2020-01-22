@@ -1,18 +1,13 @@
 package com.example.vongcat.Presenter;
 
-import android.util.Log;
-
 import com.example.vongcat.Model.ListBeverageFirebase;
-import com.example.vongcat.View.TableAdapter.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ListBeverage {
     private static final ListBeverage ourInstance = new ListBeverage();

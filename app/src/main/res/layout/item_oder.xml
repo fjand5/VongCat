@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:hint="Tên bàn"
+        android:hint="Tên món"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nameTableTxt"/>
+        android:id="@+id/nameOderTxt"/>
     <TextView
-        android:hint="Tổng tiền"
+        android:hint="Giá"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toltalTableTxt"/>
+        android:id="@+id/valueOderTxt"/>
 </LinearLayout>
