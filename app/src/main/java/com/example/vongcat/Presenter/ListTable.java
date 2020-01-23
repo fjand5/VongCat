@@ -17,6 +17,8 @@ public class ListTable{
     OnListTableChange onListTableChange;
 
     List<Item> listItem;
+
+    JSONArray mJsonArray= null;
     public void setOnListTableChange(OnListTableChange onListTableChange) {
         this.onListTableChange = onListTableChange;
     }
@@ -24,22 +26,35 @@ public class ListTable{
     public static ListTable getInstance() {
         if (ourInstance == null)
             ourInstance = new ListTable();
+
         return ourInstance;
     }
+
+    public JSONArray getmJsonArray() {
+        return mJsonArray;
+    }
+
+    public void setmJsonArray(JSONArray mJsonArray) {
+        this.mJsonArray = mJsonArray;
+    }
+
     public ListTable setListItem(List<Item> list){
         listItem = list;
         return ourInstance;
     }
+
 
     public List<Item> getListItem() {
         return listItem;
     }
 
     private ListTable() {
-    ListTableFirebase.getInstance();
+        mJsonArray = new JSONArray();
+        ListTableFirebase.getInstance();
 
     }
     public void updateData(JSONArray listTable){
+        mJsonArray = listTable;
         listItem.clear();
        for (int i=0; i < listTable.length(); i++) {
             try {

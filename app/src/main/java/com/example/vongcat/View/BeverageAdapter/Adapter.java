@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.vongcat.Presenter.ListBeverage;
+import com.example.vongcat.Presenter.ListTable;
 import com.example.vongcat.R;
+import com.example.vongcat.View.AddOderActivity;
 
 import java.util.List;
 
@@ -32,11 +34,14 @@ public class Adapter extends ArrayAdapter<Item> {
                 });
             }
         });
+        ListBeverage.getInstance().updateData(
+                ListBeverage.getInstance().getmJsonArray()
+        );
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View v = convertView;
         if (v == null)
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_beverage,parent,false);
@@ -45,6 +50,16 @@ public class Adapter extends ArrayAdapter<Item> {
         TextView valueBeverageTxt=v.findViewById(R.id.valueBeverageTxt);
 
         nameBeverageTxt.setText(getItem(position).getName());
+        valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()));
+
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddOderActivity.setChoice(getItem(position));
+
+            }
+        });
         return v;
     }
 }

@@ -1,10 +1,20 @@
 package com.example.vongcat.View.OderAdapter;
 
 public class Item {
+    String key;
     String table;
     String name;
     int value;
     boolean isPaid=false;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getName() {
         return name;
     }
@@ -37,18 +47,12 @@ public class Item {
         this.name = name;
     }
 
-    public int getTotal() {
-        return value;
-    }
 
-    public void setTotal(int total) {
-        this.value = total;
-    }
-
-    public Item(String name,String table, int total, boolean isPaid) {
+    public Item(String name,String table, int value, boolean isPaid) {
         this.name = name;
-        this.value = total;
+        this.value = value;
         this.isPaid = isPaid;
         this.table = table;
+
     }
 }

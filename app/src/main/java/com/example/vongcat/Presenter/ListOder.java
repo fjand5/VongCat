@@ -2,6 +2,7 @@ package com.example.vongcat.Presenter;
 
 import android.util.Log;
 
+import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.View.OderAdapter.Item;
 
@@ -20,6 +21,7 @@ public class ListOder {
     OnListOderChange onListOderChange;
 
     List<Item> listItem;
+    JSONObject mJsonObject= null;
     public void setOnListOderChange(OnListOderChange onListOderChange) {
         this.onListOderChange = onListOderChange;
     }
@@ -30,21 +32,29 @@ public class ListOder {
         return ourInstance;
     }
 
+    public JSONObject getmJsonObject() {
+       return this.mJsonObject;
+    }
 
     public List<Item>  getListItem() {
         return listItem;
     }
 
     private ListOder() {
+        mJsonObject = new JSONObject();
+        ListOderFirebase.getInstance();
     }
     public ListOder setListItem(List<Item> list){
         listItem = list;
         return ourInstance;
     }
     public void updateData(JSONObject listOder){
+
+        mJsonObject = listOder;
         Iterator<String> keys = listOder.keys();
         listItem.clear();
         while(keys.hasNext()) {
+
             String key = keys.next();
             try {
                 if (listOder.get(key) instanceof JSONObject) {
@@ -53,9 +63,18 @@ public class ListOder {
                     String table = jsonObject.getString("table");
                     int value = jsonObject.getInt("value");
                     boolean isPaid = jsonObject.getBoolean("isPaid");
-                    listItem.add(new Item(name,table,value,isPaid));
+                    String mkey = jsonObject.getString("key");
+
+                    if(isPaid == false){
+
+                        Item item = new Item(name,table,value,isPaid);
+                        item.setKey(mkey);
+                        listItem.add(item);
+                    }
+
                 }
             } catch (JSONException e) {
+
                 e.printStackTrace();
             }
         }
@@ -67,5 +86,50 @@ public class ListOder {
     };
     public interface OnListOderChange{
         void callBack(List<Item> listItem);
+    }
+    public void addOder(com.example.vongcat.View.TableAdapter.Item table,
+                        com.example.vongcat.View.BeverageAdapter.Item beverage){
+        Item item = new Item(beverage.getName(),table.getName(),beverage.getValue(),false);
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("name",item.getName());
+            jsonObject.put("table",item.getTable());
+            jsonObject.put("value",item.getValue());
+            jsonObject.put("isPaid",item.isPaid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ListOderFirebase.getInstance().addOder(jsonObject);
+    }
+    public void removeOder(String key){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("key",key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ListOderFirebase.getInstance().removeOder(jsonObject);
+    }
+    public void setIsPaidOder(String key){
+        JSONObject jsonObject = new JSONObject();
+        for (Item item:
+        listItem) {
+            if(item.getKey().equals(key)){
+                try {
+                    jsonObject.put("name",item.getName());
+                    jsonObject.put("table",item.getTable());
+                    jsonObject.put("value",item.getValue());
+                    jsonObject.put("isPaid",item.isPaid());
+                    jsonObject.put("key",item.getKey());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        ListOderFirebase.getInstance().setIsPaidOder(jsonObject);
     }
 }

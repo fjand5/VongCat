@@ -14,6 +14,7 @@ import java.util.Map;
 public class ListBeverage {
     private static final ListBeverage ourInstance = new ListBeverage();
 
+    JSONArray mJsonArray;
     public static ListBeverage getInstance() {
 
         return ourInstance;
@@ -26,14 +27,24 @@ public class ListBeverage {
     }
 
     private ListBeverage() {
+        mJsonArray = new JSONArray();
         ListBeverageFirebase.getInstance();
     }
     public ListBeverage setListItem(List<Item> list){
         listBeverage = list;
         return ourInstance;
     }
-    public void updateData(JSONArray arrBeverage){
 
+    public JSONArray getmJsonArray() {
+        return mJsonArray;
+    }
+
+    public void setmJsonArray(JSONArray mJsonArray) {
+        this.mJsonArray = mJsonArray;
+    }
+
+    public void updateData(JSONArray arrBeverage){
+        mJsonArray = arrBeverage;
         listBeverage.clear();
         for (int i=0; i < arrBeverage.length(); i++) {
             try {

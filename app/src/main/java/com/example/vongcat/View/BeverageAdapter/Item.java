@@ -17,7 +17,7 @@ public class Item {
         this.name = name;
     }
 
-    public int getTotal() {
+    public int getValue() {
         return value;
     }
 

@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:hint="Tên món"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nameOderTxt"/>
+        android:weightSum="2">
+        <TextView
+            android:hint="Tên món"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameOderTxt"
+            android:layout_weight="1"/>
+        <TextView
+            android:hint="Bàn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableOderTxt"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
     <TextView
         android:hint="Giá"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/valueOderTxt"/>
+    <CheckBox
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/isPaidChb"/>
 </LinearLayout>

@@ -29,6 +29,7 @@ public class ListOderFirebase {
     }
 
     public ListOderFirebase() {
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListOder");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -42,6 +43,7 @@ public class ListOderFirebase {
                     tmp = dataSnapshotChild.getValue().toString();
                 try {
                     JSONObject jsonObject = new JSONObject(tmp);
+
                     ListOder.getInstance().updateData(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -57,9 +59,34 @@ public class ListOderFirebase {
     }
     public void addOder(JSONObject oder){
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        myRef.child(currentDate).push().setValue(oder.toString());
+
+       DatabaseReference databaseReference = myRef.child(currentDate).push();
+        try {
+            oder.put("key",databaseReference.getKey());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        databaseReference .setValue(oder.toString());
     }
     public void removeOder(JSONObject oder){
-
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        try {
+            myRef.child(currentDate).child(oder.getString("key")).setValue(null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setIsPaidOder(JSONObject oder){
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        try {
+            oder.put("isPaid",true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            myRef.child(currentDate).child(oder.getString("key")).setValue(oder.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
