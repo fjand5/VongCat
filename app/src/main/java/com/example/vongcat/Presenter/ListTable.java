@@ -1,7 +1,7 @@
 package com.example.vongcat.Presenter;
 
 import com.example.vongcat.Model.ListTableFirebase;
-import com.example.vongcat.View.OderAdapter.Item;
+import com.example.vongcat.View.TableAdapter.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,21 +14,22 @@ public class ListTable{
 
     OnListTableChange onListTableChange;
 
-    Set<String> listItem;
+    List<Item> listItem;
     public void setOnListTableChange(OnListTableChange onListTableChange) {
         this.onListTableChange = onListTableChange;
     }
 
-    public static ListTable getInstance(List<String> objects) {
+    public static ListTable getInstance() {
         if (ourInstance == null)
             ourInstance = new ListTable();
         return ourInstance;
     }
-    public static ListTable getInstance() {
+    public ListTable setListItem(List<Item> list){
+        listItem = list;
         return ourInstance;
     }
 
-    public Set<String> getListItem() {
+    public List<Item> getListItem() {
         return listItem;
     }
 
@@ -41,7 +42,7 @@ public class ListTable{
        for (int i=0; i < listTable.length(); i++) {
             try {
                 String name = listTable.get(i).toString();
-                listItem.add(name);
+                listItem.add(new Item(name,0));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -51,6 +52,6 @@ public class ListTable{
 
     };
     public interface OnListTableChange{
-        void callBack(Set<String> listItem);
+        void callBack(List<Item> listItem);
     }
 }
