@@ -1,5 +1,7 @@
 package com.example.vongcat.Presenter;
 
+import android.util.Log;
+
 import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.View.TableAdapter.Item;
 
@@ -38,7 +40,7 @@ public class ListTable{
 
     }
     public void updateData(JSONArray listTable){
-
+        listItem.clear();
        for (int i=0; i < listTable.length(); i++) {
             try {
                 String name = listTable.get(i).toString();

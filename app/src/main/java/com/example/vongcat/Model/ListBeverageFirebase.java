@@ -47,16 +47,7 @@ public class ListBeverageFirebase {
         });
 
 
-        // tesst
-        JSONArray jsonArray = new JSONArray();
-        try {
-            jsonArray.put(new JSONObject("{\"name\":\"CF den\",\"val\":15}"));
-            jsonArray.put(new JSONObject("{\"name\":\"CF den\",\"val\":15}"));
-            jsonArray.put(new JSONObject("{\"name\":\"CF sua\",\"val\":15}"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        myRef.setValue(jsonArray.toString());
+
 
     }
 }

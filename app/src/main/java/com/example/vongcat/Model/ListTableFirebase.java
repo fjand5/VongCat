@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Reader;
 
@@ -26,8 +27,10 @@ public class ListTableFirebase {
     public ListTableFirebase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListTable");
+//        myRef.goOffline();
 
         myRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -44,6 +47,16 @@ public class ListTableFirebase {
 
             }
         });
+//        myRef.goOffline();
+        // tesst
+//        JSONArray jsonArray = new JSONArray();
+//
+//            jsonArray.put("Ban 1");
+//          jsonArray.put("Ban 2");
+//          jsonArray.put("Ban 3");
+//          jsonArray.put("Ban 4");
+//
+//        myRef.setValue(jsonArray.toString());
 
     }
 }

@@ -1,12 +1,14 @@
 package com.example.vongcat.Presenter;
 
 import com.example.vongcat.Model.ListBeverageFirebase;
+import com.example.vongcat.View.BeverageAdapter.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ListBeverage {
@@ -18,14 +20,17 @@ public class ListBeverage {
     }
 
     OnListBeverageChange onListBeverageChange;
-    Map<String, Integer> listBeverage;
+    List<Item> listBeverage;
     public void setOnListBeverageChange(OnListBeverageChange onListBeverageChange) {
         this.onListBeverageChange = onListBeverageChange;
     }
 
     private ListBeverage() {
-        listBeverage = new HashMap<>();
         ListBeverageFirebase.getInstance();
+    }
+    public ListBeverage setListItem(List<Item> list){
+        listBeverage = list;
+        return ourInstance;
     }
     public void updateData(JSONArray arrBeverage){
 
@@ -34,7 +39,7 @@ public class ListBeverage {
             try {
                 JSONObject bvr = arrBeverage.getJSONObject(i);
 
-                listBeverage.put(bvr.getString("name"),bvr.getInt("val"));
+                listBeverage.add(new Item(bvr.getString("name"),bvr.getInt("val")));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -45,6 +50,6 @@ public class ListBeverage {
 
     };
     public interface OnListBeverageChange{
-        void callBack(Map<String, Integer> listBeverage);
+        void callBack(List<Item>  listBeverage);
     }
 }
