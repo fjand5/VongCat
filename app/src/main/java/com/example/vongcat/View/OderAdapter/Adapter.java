@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,36 +58,38 @@ public class Adapter extends ArrayAdapter<Item>  {
         TextView nameOderTxt=v.findViewById(R.id.nameOderTxt);
         TextView valueOderTxt=v.findViewById(R.id.valueOderTxt);
         TextView tableOderTxt = v.findViewById(R.id.tableOderTxt);
-        final CheckBox isPaidChb= v.findViewById(R.id.isPaidChb);
-
-
+        CheckBox isPaidChb= v.findViewById(R.id.isPaidChb);
         final List<Item> itemList = ListOder.getInstance().getListItem();
+        isPaidChb.setChecked(false);
+        for (Item item:
+             MainActivity.getOder4Pay()) {
+            if(item.getKey().equals(itemList.get(position).getKey()))
+                isPaidChb.setChecked(true);
+        }
+
+
         nameOderTxt.setText( itemList.get(position).getName());
         valueOderTxt.setText(String.valueOf(itemList.get(position).getValue()));
         tableOderTxt.setText(itemList.get(position).getTable());
+
         if(itemList.get(position).isPaid() == true)
             v.setBackgroundColor(Color.RED);
 
-        v.setOnClickListener(new View.OnClickListener() {
+        isPaidChb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                boolean isChecked = isPaidChb.isChecked();
-                if(isChecked){ // add
-                    isPaidChb.setChecked(false);
-                    view.setBackgroundColor(Color.WHITE);
-                    MainActivity.removeOder4Pay(itemList.get(position));
-                }else{  // remove
-                    isPaidChb.setChecked(true);
-                    view.setBackgroundColor(Color.BLUE);
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){ // add
+//                    isPaidChb.setChecked(false);
                     MainActivity.addOder4Pay(itemList.get(position));
+                }else{  // remove
+//                    isPaidChb.setChecked(true);
+                    MainActivity.removeOder4Pay(itemList.get(position));
+
 
                 }
-
-
-
-
             }
         });
+
         return v;
     }
 

@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                         item4Pay) {
                     ListOder.getInstance().setIsPaidOder(item.getKey());
                 }
+                item4Pay.clear();
+
 
             }
         });
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void addOder4Pay(Item item){
         int sum=0;
+        Log.d("htl","add: " + item.getValue());
         item4Pay.add(item);
         for (Item e:
                 item4Pay) {
@@ -90,12 +93,15 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void removeOder4Pay(Item item){
         int sum=0;
+        Log.d("htl","removeOder4Pay: " + item.getValue());
         item4Pay.remove(item);
         for (Item e:
                 item4Pay) {
-
             sum+=e.getValue();
         }
         sumOderTxt.setText(String.valueOf(sum));
+    }
+    public static List<Item> getOder4Pay(){
+        return  item4Pay;
     }
 }

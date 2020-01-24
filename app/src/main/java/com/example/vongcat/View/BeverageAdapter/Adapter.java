@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,26 +50,28 @@ public class Adapter extends ArrayAdapter<Item> {
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_beverage,parent,false);
 
         TextView nameBeverageTxt=v.findViewById(R.id.nameBeverageTxt);
-        TextView valueBeverageTxt=v.findViewById(R.id.valueBeverageTxt);
-        final CheckBox isSelectBeverageChb=v.findViewById(R.id.isSelectBeverageChb);
+        final TextView valueBeverageTxt=v.findViewById(R.id.valueBeverageTxt);
+        CheckBox isSelectBeverageChb=v.findViewById(R.id.isSelectBeverageChb);
 
         nameBeverageTxt.setText(getItem(position).getName());
         valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()));
 
+        isSelectBeverageChb.setChecked(false);
+        for (Item item:
+                AddOderActivity.getBeverage()) {
+            if(item.getName().equals(getItem(position).getName()))
+                isSelectBeverageChb.setChecked(true);
+        }
 
-        v.setOnClickListener(new View.OnClickListener() {
+        isSelectBeverageChb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isChecked = isSelectBeverageChb.isChecked();
-                if(isChecked){ // add
-                    isSelectBeverageChb.setChecked(false);
-                    view.setBackgroundColor(Color.WHITE);
-                    AddOderActivity.removeBeverage(getItem(position));
+                if(((CheckBox)view).isChecked()){ // add
+                    AddOderActivity.addBeverage(getItem(position));
 
                 }else{  // remove
-                    isSelectBeverageChb.setChecked(true);
-                    view.setBackgroundColor(Color.BLUE);
-                    AddOderActivity.addBeverage(getItem(position));
+                    AddOderActivity.removeBeverage(getItem(position));
+
 
                 }
 

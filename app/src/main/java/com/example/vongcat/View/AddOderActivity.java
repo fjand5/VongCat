@@ -124,5 +124,9 @@ public class AddOderActivity extends Activity {
 
         }
     };
+    public static List<com.example.vongcat.View.BeverageAdapter.Item> getBeverage(){
+       return mItemBeverage;
+    };
+
 
 }
