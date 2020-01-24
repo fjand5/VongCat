@@ -28,7 +28,7 @@ public class AddOderActivity extends Activity {
     com.example.vongcat.View.BeverageAdapter.Adapter beverageAdapter;
 
     static com.example.vongcat.View.TableAdapter.Item mItemTable=null;
-    static com.example.vongcat.View.BeverageAdapter.Item mItemBeverage=null;
+    static List<com.example.vongcat.View.BeverageAdapter.Item> mItemBeverage=null;
     private static TextView tableChoiceTxt;
     private static TextView beverageChoiceTxt;
     private static Button doneBtn;
@@ -50,7 +50,7 @@ public class AddOderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_oder);
         mItemTable = null;
-        mItemBeverage = null;
+        mItemBeverage = new ArrayList<>();
         initView();
         addEvent();
     }
@@ -59,7 +59,10 @@ public class AddOderActivity extends Activity {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListOder.getInstance().addOder(mItemTable,mItemBeverage);
+                for (com.example.vongcat.View.BeverageAdapter.Item item:
+                        mItemBeverage) {
+                    ListOder.getInstance().addOder(mItemTable,item);
+                }
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(i);
             }
@@ -92,16 +95,34 @@ public class AddOderActivity extends Activity {
         tableChoiceTxt.setText(mItemTable.getName());
 
         if(mItemTable != null
-        && mItemBeverage != null){
+                && mItemBeverage.size()>0){
             doneBtn.setEnabled(true);
         }
     };
-    public static void setChoice(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
-        mItemBeverage = itemBeverage;
-        beverageChoiceTxt.setText(mItemBeverage.getName());
+    public static void addBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
+        mItemBeverage.add(itemBeverage);
+        Log.d("htl","addBeverage: "+ mItemBeverage.toString());
+        beverageChoiceTxt.setText(itemBeverage.getName());
         if(mItemTable != null
-                && mItemBeverage != null){
+                && mItemBeverage.size()>0){
             doneBtn.setEnabled(true);
+        }else{
+            doneBtn.setEnabled(false);
+
         }
     };
+    public static void removeBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
+        mItemBeverage.remove(itemBeverage);
+
+        Log.d("htl","removeBeverage: "+ mItemBeverage.toString());
+        beverageChoiceTxt.setText(itemBeverage.getName());
+        if(mItemTable != null
+                && mItemBeverage.size()>0){
+            doneBtn.setEnabled(true);
+        }else{
+            doneBtn.setEnabled(false);
+
+        }
+    };
+
 }

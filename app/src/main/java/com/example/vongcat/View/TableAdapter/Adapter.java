@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Adapter extends ArrayAdapter<Item> {
-
+View preView = null;
     public Adapter(@NonNull Context context, int resource, @NonNull List<Item> objects) {
         super(context, resource, objects);
 
@@ -52,12 +53,32 @@ public class Adapter extends ArrayAdapter<Item> {
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_table,parent,false);
 
         TextView nameTableTxt=v.findViewById(R.id.nameTableTxt);
+        final CheckBox isSelectTableChb = v.findViewById(R.id.isSelectTableChb);
+
         nameTableTxt.setText(ListTable.getInstance().getListItem().get(position).getName());
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddOderActivity.setChoice(ListTable.getInstance().getListItem().get(position));
+
+                boolean isChecked = isSelectTableChb.isChecked();
+                if(preView != null)
+                    preView.setBackgroundColor(Color.WHITE);
+
+                if(isChecked){ // add
+                    isSelectTableChb.setChecked(false);
+                    notifyDataSetChanged();
+                    view.setBackgroundColor(Color.WHITE);
+
+                }else{  // remove
+                    notifyDataSetChanged();
+                    view.setBackgroundColor(Color.BLUE);
+                    AddOderActivity.setChoice(ListTable.getInstance().getListItem().get(position));
+                    isSelectTableChb.setChecked(true);
+
+
+                }
+                preView =view;
             }
         });
         return v;
