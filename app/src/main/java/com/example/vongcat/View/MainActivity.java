@@ -101,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
         }
         sumOderTxt.setText(String.valueOf(sum));
     }
+    public static void clearOder4Pay(){
+        item4Pay.clear();
+
+    }
     public static List<Item> getOder4Pay(){
         return  item4Pay;
     }

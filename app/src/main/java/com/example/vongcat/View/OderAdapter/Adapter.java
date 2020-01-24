@@ -1,6 +1,8 @@
 package com.example.vongcat.View.OderAdapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ public class Adapter extends ArrayAdapter<Item>  {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+                            MainActivity.clearOder4Pay();
                         notifyDataSetChanged();
                         }
                     });
@@ -59,6 +63,8 @@ public class Adapter extends ArrayAdapter<Item>  {
         TextView valueOderTxt=v.findViewById(R.id.valueOderTxt);
         TextView tableOderTxt = v.findViewById(R.id.tableOderTxt);
         CheckBox isPaidChb= v.findViewById(R.id.isPaidChb);
+        Button moreBtn = v.findViewById(R.id.moreBtn);
+
         final List<Item> itemList = ListOder.getInstance().getListItem();
         isPaidChb.setChecked(false);
         for (Item item:
@@ -79,14 +85,29 @@ public class Adapter extends ArrayAdapter<Item>  {
             @Override
             public void onClick(View v) {
                 if(((CheckBox)v).isChecked()){ // add
-//                    isPaidChb.setChecked(false);
                     MainActivity.addOder4Pay(itemList.get(position));
                 }else{  // remove
-//                    isPaidChb.setChecked(true);
                     MainActivity.removeOder4Pay(itemList.get(position));
-
-
                 }
+            }
+        });
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage("Xóa món này ra khỏi danh sách ?").setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ListOder.getInstance().removeOder(itemList.get(position).getKey());
+                    }
+                })
+                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
+
             }
         });
 
