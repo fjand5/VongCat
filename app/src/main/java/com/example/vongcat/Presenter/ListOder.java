@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +80,13 @@ public class ListOder {
                 e.printStackTrace();
             }
         }
+        Collections.sort(listItem, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
 
+                return o1.getTable().compareTo(o2.getTable());
+            }
+        });
 
         if(onListOderChange != null)
             onListOderChange.callBack(listItem);
