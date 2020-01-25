@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -49,34 +50,44 @@ public class Adapter extends ArrayAdapter<Item> {
         if (v == null)
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_beverage,parent,false);
 
-        TextView nameBeverageTxt=v.findViewById(R.id.nameBeverageTxt);
-        final TextView valueBeverageTxt=v.findViewById(R.id.valueBeverageTxt);
-        CheckBox isSelectBeverageChb=v.findViewById(R.id.isSelectBeverageChb);
+        TextView nameBeverageTxt = v.findViewById(R.id.nameBeverageTxt);
+        TextView valueBeverageTxt = v.findViewById(R.id.valueBeverageTxt);
+        Button incBeverageBtn = v.findViewById(R.id.incBeverageBtn);
+        Button decBeverageBtn = v.findViewById(R.id.decBeverageBtn);
+        TextView quanBeverageTxt = v.findViewById(R.id.quanBeverageTxt);
 
         nameBeverageTxt.setText(getItem(position).getName());
-        valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()));
+        valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()) +"k");
 
-        isSelectBeverageChb.setChecked(false);
-        for (Item item:
-                AddOderActivity.getBeverage()) {
-            if(item.getName().equals(getItem(position).getName()))
-                isSelectBeverageChb.setChecked(true);
-        }
-
-        isSelectBeverageChb.setOnClickListener(new View.OnClickListener() {
+        incBeverageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(((CheckBox)view).isChecked()){ // add
-                    AddOderActivity.addBeverage(getItem(position));
-
-                }else{  // remove
-                    AddOderActivity.removeBeverage(getItem(position));
-
-
-                }
-
+                AddOderActivity.addBeverage(getItem(position));
+                notifyDataSetChanged();
             }
         });
+        decBeverageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddOderActivity.removeBeverage(getItem(position));
+                notifyDataSetChanged();
+            }
+        });
+
+        int sum = 0;
+        for (Item item:
+                AddOderActivity.getBeverage()) {
+            if(item.getName().equals(getItem(position).getName())){
+                sum++;
+            }
+        }
+        quanBeverageTxt.setText(" x" + sum);
+        if(sum > 0){
+            quanBeverageTxt.setTextColor(Color.RED);
+        }else {
+            quanBeverageTxt.setTextColor(Color.BLACK);
+        }
+
         return v;
     }
 }

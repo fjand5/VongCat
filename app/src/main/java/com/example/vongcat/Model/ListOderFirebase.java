@@ -35,6 +35,8 @@ public class ListOderFirebase {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("htl","onDataChange");
+
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
                 DataSnapshot dataSnapshotChild = dataSnapshot.child(currentDate);
@@ -53,6 +55,7 @@ public class ListOderFirebase {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.d("htl","onCancelled: " + databaseError.toString());
 
             }
         });

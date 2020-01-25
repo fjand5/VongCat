@@ -102,7 +102,6 @@ public class AddOderActivity extends Activity {
     };
     public static void addBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
         mItemBeverage.add(itemBeverage);
-        Log.d("htl","addBeverage: "+ mItemBeverage.toString());
         beverageChoiceTxt.setText(itemBeverage.getName());
         if(mItemTable != null
                 && mItemBeverage.size()>0){
@@ -115,7 +114,6 @@ public class AddOderActivity extends Activity {
     public static void removeBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
         mItemBeverage.remove(itemBeverage);
 
-        Log.d("htl","removeBeverage: "+ mItemBeverage.toString());
         beverageChoiceTxt.setText(itemBeverage.getName());
         if(mItemTable != null
                 && mItemBeverage.size()>0){

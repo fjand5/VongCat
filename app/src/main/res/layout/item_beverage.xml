@@ -2,24 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:hint="Tên món"
-    android:id="@+id/nameBeverageTxt"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:textSize="@dimen/textSizeDefault"
+            android:textAllCaps="true"
+            android:hint="Tên món"
+            android:id="@+id/nameBeverageTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:text="+"
+            android:id="@+id/incBeverageBtn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:text="-"
+            android:id="@+id/decBeverageBtn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:textSize="@dimen/textSizeDefault"
+            android:textAllCaps="true"
             android:hint="Giá"
             android:id="@+id/valueBeverageTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <CheckBox
+        <TextView
+            android:textSize="@dimen/textSizeDefault"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/isSelectBeverageChb"/>
+            android:id="@+id/quanBeverageTxt"/>
     </LinearLayout>
 
 </LinearLayout>

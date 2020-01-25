@@ -44,19 +44,9 @@ public class ListTableFirebase {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-//        myRef.goOffline();
-        // tesst
-//        JSONArray jsonArray = new JSONArray();
-//
-//            jsonArray.put("Ban 1");
-//          jsonArray.put("Ban 2");
-//          jsonArray.put("Ban 3");
-//          jsonArray.put("Ban 4");
-//
-//        myRef.setValue(jsonArray.toString());
+
 
     }
 }

@@ -5,6 +5,8 @@
     android:focusableInTouchMode="true"
 >
     <EditText
+        android:textSize="@dimen/textSizeDefault"
+        android:textAllCaps="true"
         android:focusedByDefault="false"
         android:hint="Tên món"
         android:layout_width="match_parent"
@@ -12,6 +14,8 @@
         android:id="@+id/nameOderMoreTxt"
 />
     <EditText
+        android:textSize="@dimen/textSizeDefault"
+        android:textAllCaps="true"
         android:focusedByDefault="false"
         android:hint="Giá"
         android:layout_width="match_parent"
@@ -30,12 +34,15 @@
         android:orientation="horizontal">
 
     <Button
+        android:textAllCaps="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Xong"
         android:id="@+id/doneMoreBtn"
         ></Button>
         <Button
+
+            android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xóa "

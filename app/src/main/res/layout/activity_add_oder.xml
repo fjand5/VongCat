@@ -3,18 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="10"
+
     >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="2"
+        android:weightSum="4"
         android:layout_weight="8">
         <ListView
             android:id="@+id/tableLsv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <ListView
             android:id="@+id/beverageLsv"
             android:layout_width="wrap_content"
@@ -35,13 +36,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <TextView
+            android:textSize="@dimen/textSizeDefault"
+            android:textAllCaps="true"
             android:hint="Chưa chọn bàn"
             android:id="@+id/tableChoiceTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <TextView
+            android:textSize="@dimen/textSizeDefault"
             android:hint="Chưa món"
+            android:textAllCaps="true"
             android:id="@+id/beverageChoiceTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.vongcat.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +16,11 @@ import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     static List<Item> item4Pay;
+    private TextView loadingTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +83,23 @@ public class MainActivity extends AppCompatActivity {
         addOderBtn = findViewById(R.id.addOderBtn);
         sumOderTxt = findViewById(R.id.sumOderTxt);
         payOderBtn= findViewById(R.id.payOderBtn);
+        loadingTxt = findViewById(R.id.loadingTxt);
 
         itemOder = new ArrayList<>();
         adapterTable = new Adapter(this,R.layout.item_oder,itemOder);
         oderLsv.setAdapter(adapterTable);
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("check");
+        myRef.setValue("ok").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                loadingTxt.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
     }
     public static void addOder4Pay(Item item){
         int sum=0;

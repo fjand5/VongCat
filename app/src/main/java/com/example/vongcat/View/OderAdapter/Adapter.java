@@ -50,6 +50,7 @@ public class Adapter extends ArrayAdapter<Item>  {
             });
         ListOder.getInstance().updateData(
                 ListOder.getInstance().getmJsonObject()
+
         );
 
     }
@@ -79,7 +80,7 @@ public class Adapter extends ArrayAdapter<Item>  {
 
 
         nameOderTxt.setText( itemList.get(position).getName());
-        valueOderTxt.setText(String.valueOf(itemList.get(position).getValue()));
+        valueOderTxt.setText(String.valueOf(itemList.get(position).getValue())+"k");
         tableOderTxt.setText(itemList.get(position).getTable());
 
         if(itemList.get(position).isPaid() == true)

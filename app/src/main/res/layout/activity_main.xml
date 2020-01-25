@@ -7,7 +7,13 @@
     tools:context=".View.MainActivity"
     android:orientation="vertical"
     android:weightSum="10">
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/textSizeDefault"
+    android:text="Đang tải dữ liệu..."
+    android:id="@+id/loadingTxt"
+    />
     <ListView
         android:id="@+id/oderLsv"
         android:layout_width="match_parent"
@@ -20,17 +26,22 @@
         android:weightSum="3"
         android:layout_weight="2">
         <Button
+            android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thêm món"
             android:id="@+id/addOderBtn"
             android:layout_weight="1"/>
         <TextView
+            android:textSize="@dimen/textSizeDefault"
+            android:textAllCaps="true"
             android:hint="Tổng tiền"
             android:id="@+id/sumOderTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <Button
+            android:textSize="@dimen/textSizeDefault"
+            android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thanh toán"
