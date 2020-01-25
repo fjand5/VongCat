@@ -111,6 +111,13 @@ public class ListOder {
         }
         ListOderFirebase.getInstance().addOder(jsonObject);
     }
+    public void editOder(Item OldOder,
+                         Item NewOder){
+
+        ListOderFirebase.getInstance().editOder(OldOder.getJson(),NewOder.getJson());
+    }
+
+
     public void removeOder(String key){
         JSONObject jsonObject = new JSONObject();
 

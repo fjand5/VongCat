@@ -92,8 +92,9 @@ public class AddOderActivity extends Activity {
 
     public static void setChoice(com.example.vongcat.View.TableAdapter.Item itemTable){
         mItemTable = itemTable;
+        if(tableChoiceTxt == null)
+            return;
         tableChoiceTxt.setText(mItemTable.getName());
-
         if(mItemTable != null
                 && mItemBeverage.size()>0){
             doneBtn.setEnabled(true);

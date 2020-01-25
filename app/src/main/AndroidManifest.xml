@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".View.AddOderActivity"/>
+        <activity android:name=".View.MoreActivity"/>
     </application>
 
 </manifest>

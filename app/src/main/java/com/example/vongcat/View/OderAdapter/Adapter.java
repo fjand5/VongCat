@@ -3,8 +3,10 @@ package com.example.vongcat.View.OderAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -23,6 +25,8 @@ import androidx.annotation.Nullable;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.MainActivity;
+import com.example.vongcat.View.MoreActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,19 +98,11 @@ public class Adapter extends ArrayAdapter<Item>  {
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage("Xóa món này ra khỏi danh sách ?").setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ListOder.getInstance().removeOder(itemList.get(position).getKey());
-                    }
-                })
-                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        }).show();
+                Intent i = new Intent(getContext(), MoreActivity.class);
+                Gson gson = new Gson();
+                String obj  = gson.toJson(itemList.get(position));
+                i.putExtra("item",obj);
+                view.getContext().startActivity(i);
 
             }
         });

@@ -24,6 +24,7 @@ import java.util.Set;
 
 public class Adapter extends ArrayAdapter<Item> {
 View preView = null;
+Item selectedItem = null;
     public Adapter(@NonNull Context context, int resource, @NonNull List<Item> objects) {
         super(context, resource, objects);
 
@@ -62,6 +63,7 @@ View preView = null;
             public void onClick(View view) {
 
                 boolean isChecked = isSelectTableChb.isChecked();
+                selectedItem = getItem(position);
                 if(preView != null)
                     preView.setBackgroundColor(Color.WHITE);
 
@@ -73,6 +75,7 @@ View preView = null;
                 }else{  // remove
                     notifyDataSetChanged();
                     view.setBackgroundColor(Color.BLUE);
+
                     AddOderActivity.setChoice(ListTable.getInstance().getListItem().get(position));
                     isSelectTableChb.setChecked(true);
 
@@ -82,5 +85,9 @@ View preView = null;
             }
         });
         return v;
+    }
+
+    public Item getSelectedItem() {
+        return selectedItem;
     }
 }

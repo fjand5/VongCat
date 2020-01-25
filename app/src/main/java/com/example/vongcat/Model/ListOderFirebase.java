@@ -89,4 +89,20 @@ public class ListOderFirebase {
             e.printStackTrace();
         }
     }
+    public boolean editOder(JSONObject OldOder,JSONObject NewOder){
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        Log.d("htl","OldOder: "+ OldOder.toString());
+        Log.d("htl","NewOder: "+ NewOder.toString());
+
+            try {
+                if(OldOder.get("key").equals(NewOder.get("key"))){
+
+                    myRef.child(currentDate).child(OldOder.getString("key")).setValue(NewOder.toString());
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return false;
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.vongcat.View.OderAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Item {
     String key;
     String table;
@@ -54,5 +57,19 @@ public class Item {
         this.isPaid = isPaid;
         this.table = table;
 
+    }
+    public JSONObject getJson(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("name",getName());
+            jsonObject.put("table",getTable());
+            jsonObject.put("value",getValue());
+            jsonObject.put("isPaid",isPaid());
+            jsonObject.put("key",getKey());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }
