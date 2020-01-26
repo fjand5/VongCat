@@ -56,7 +56,12 @@ public class Adapter extends ArrayAdapter<Item> {
         Button decBeverageBtn = v.findViewById(R.id.decBeverageBtn);
         TextView quanBeverageTxt = v.findViewById(R.id.quanBeverageTxt);
 
+
         nameBeverageTxt.setText(getItem(position).getName());
+        nameBeverageTxt.setBackgroundColor(Color.WHITE);
+
+            nameBeverageTxt.setTextColor(Color.parseColor(getItem(position).getColor()));
+
         valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()) +"k");
 
         incBeverageBtn.setOnClickListener(new View.OnClickListener() {

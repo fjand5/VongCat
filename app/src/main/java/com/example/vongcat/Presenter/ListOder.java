@@ -57,6 +57,7 @@ public class ListOder {
         mJsonObject = listOder;
         Iterator<String> keys = listOder.keys();
         listItem.clear();
+        listAllItem.clear();
         while(keys.hasNext()) {
 
             String key = keys.next();
@@ -86,10 +87,15 @@ public class ListOder {
         Collections.sort(listItem, new Comparator<Item>() {
             @Override
             public int compare(Item o1, Item o2) {
-
-                return o1.getTable().compareTo(o2.getTable());
+                int cmpTable = o1.getTable().compareTo(o2.getTable());
+                int cmpName = o1.getName().compareTo(o2.getName());
+                if( cmpTable== 0){
+                    return cmpName;
+                }else
+                return cmpTable;
             }
         });
+
 
         if(onListOderChange != null)
             onListOderChange.callBack(listItem, listAllItem);

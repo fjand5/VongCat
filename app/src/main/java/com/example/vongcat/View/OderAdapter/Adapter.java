@@ -92,7 +92,22 @@ public class Adapter extends ArrayAdapter<Item>  {
 
         if(itemList.get(position).isPaid() == true)
             v.setBackgroundColor(Color.RED);
-
+        tableOderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (Item item :
+                        itemList) {
+                    if(item.getTable().equals(itemList.get(position).getTable())){
+                        if (MainActivity.getOder4Pay().contains(item)){
+                            MainActivity.clearOder4Pay();
+                            break;
+                        }
+                        MainActivity.addOder4Pay(item);
+                    }
+                }
+                notifyDataSetChanged();
+            }
+        });
         isPaidChb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

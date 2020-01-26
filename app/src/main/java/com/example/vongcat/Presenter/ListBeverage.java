@@ -1,5 +1,7 @@
 package com.example.vongcat.Presenter;
 
+import android.util.Log;
+
 import com.example.vongcat.Model.ListBeverageFirebase;
 import com.example.vongcat.View.BeverageAdapter.Item;
 
@@ -49,8 +51,12 @@ public class ListBeverage {
         for (int i=0; i < arrBeverage.length(); i++) {
             try {
                 JSONObject bvr = arrBeverage.getJSONObject(i);
-
-                listBeverage.add(new Item(bvr.getString("name"),bvr.getInt("val")));
+                if(!bvr.has("color")){
+                    bvr.put("color","#000000");
+                }
+                listBeverage.add(new Item(bvr.getString("name")
+                        ,bvr.getInt("val")
+                 ,bvr.getString("color")));
 
             } catch (JSONException e) {
                 e.printStackTrace();

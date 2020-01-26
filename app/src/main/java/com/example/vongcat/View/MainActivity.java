@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView loadingTxt;
     private TextView soldTxt;
     private TextView receivedTxt;
+    static int sumSold=0;
+    static int sumReceived=0;
 
+    static int sum=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +72,13 @@ public class MainActivity extends AppCompatActivity {
                     ListOder.getInstance().setIsPaidOder(item.getKey());
                 }
                 item4Pay.clear();
-
-
             }
         });
         adapterOder.setOnDataChange(new Adapter.OnDataChange() {
             @Override
             public void callBack(List<Item> itemList, List<Item> listAllItem) {
-                int sumSold=0;
-                int sumReceived=0;
+                sumSold=0;
+                sumReceived=0;
 
                 for (Item item :
                         listAllItem) {
@@ -89,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
                 receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
+        receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     private void initView() {
@@ -116,29 +130,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public static void addOder4Pay(Item item){
-        int sum=0;
-        Log.d("htl","add: " + item.getValue());
+        item4Pay.remove(item);
         item4Pay.add(item);
-        for (Item e:
-                item4Pay) {
-
-            sum+=e.getValue();
-        }
-        sumOderTxt.setText(String.valueOf(sum));
+        setSumOderTxt();
     }
     public static void removeOder4Pay(Item item){
-        int sum=0;
-        Log.d("htl","removeOder4Pay: " + item.getValue());
         item4Pay.remove(item);
-        for (Item e:
-                item4Pay) {
-            sum+=e.getValue();
-        }
-        sumOderTxt.setText(String.valueOf(sum));
+        setSumOderTxt();
     }
     public static void clearOder4Pay(){
         item4Pay.clear();
-
+        setSumOderTxt();
+    }
+    static void setSumOderTxt(){
+        sum =0;
+        for (Item e:
+                item4Pay) {
+            sum+=e.getValue();
+        }
+        sumOderTxt.setText(String.valueOf(sum));
     }
     public static List<Item> getOder4Pay(){
         return  item4Pay;
