@@ -11,19 +11,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +26,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ListView oderLsv;
-    Adapter adapterTable;
+    Adapter adapterOder;
     List<Item> itemOder;
 
 
@@ -42,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     static List<Item> item4Pay;
     private TextView loadingTxt;
+    private TextView soldTxt;
+    private TextView receivedTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +73,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        adapterOder.setOnDataChange(new Adapter.OnDataChange() {
+            @Override
+            public void callBack(List<Item> itemList, List<Item> listAllItem) {
+                int sumSold=0;
+                int sumReceived=0;
+
+                for (Item item :
+                        listAllItem) {
+                    sumSold+=item.getValue();
+                    if(item.isPaid())
+                        sumReceived+=item.getValue();
+                }
+                soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
+                receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
+            }
+        });
     }
 
     private void initView() {
@@ -84,10 +97,11 @@ public class MainActivity extends AppCompatActivity {
         sumOderTxt = findViewById(R.id.sumOderTxt);
         payOderBtn= findViewById(R.id.payOderBtn);
         loadingTxt = findViewById(R.id.loadingTxt);
-
+        soldTxt = findViewById(R.id.soldTxt);
+        receivedTxt = findViewById(R.id.receivedTxt);
         itemOder = new ArrayList<>();
-        adapterTable = new Adapter(this,R.layout.item_oder,itemOder);
-        oderLsv.setAdapter(adapterTable);
+        adapterOder = new Adapter(this,R.layout.item_oder,itemOder);
+        oderLsv.setAdapter(adapterOder);
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();

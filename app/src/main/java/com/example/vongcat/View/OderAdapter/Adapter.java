@@ -32,12 +32,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends ArrayAdapter<Item>  {
+    OnDataChange onDataChange;
+
+    public void setOnDataChange(OnDataChange onDataChange) {
+        this.onDataChange = onDataChange;
+    }
 
     public Adapter(@NonNull Context context, int resource, @NonNull List<Item> objects) {
         super(context, resource, objects);
         ListOder.getInstance().setListItem(objects).setOnListOderChange(new ListOder.OnListOderChange() {
                 @Override
-                public void callBack(List<Item> itemList) {
+                public void callBack(List<Item> itemList,List<Item> listAllItem) {
+                    if(onDataChange != null)
+                        onDataChange.callBack(itemList,listAllItem);
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -109,6 +116,9 @@ public class Adapter extends ArrayAdapter<Item>  {
         });
 
         return v;
+    }
+    public interface OnDataChange{
+        void callBack(List<Item> itemList,List<Item> listAllItem);
     }
 
 }

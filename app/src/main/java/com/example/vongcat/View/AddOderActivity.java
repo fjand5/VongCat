@@ -67,6 +67,7 @@ public class AddOderActivity extends Activity {
                 startActivity(i);
             }
         });
+
     }
 
     private void initView() {

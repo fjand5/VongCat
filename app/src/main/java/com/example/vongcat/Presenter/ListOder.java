@@ -23,6 +23,7 @@ public class ListOder {
     OnListOderChange onListOderChange;
 
     List<Item> listItem;
+    List<Item> listAllItem;
     JSONObject mJsonObject= null;
     public void setOnListOderChange(OnListOderChange onListOderChange) {
         this.onListOderChange = onListOderChange;
@@ -43,6 +44,7 @@ public class ListOder {
     }
 
     private ListOder() {
+        listAllItem = new ArrayList<>();
         mJsonObject = new JSONObject();
         ListOderFirebase.getInstance();
     }
@@ -67,12 +69,13 @@ public class ListOder {
                     boolean isPaid = jsonObject.getBoolean("isPaid");
                     String mkey = jsonObject.getString("key");
 
+                    Item item = new Item(name,table,value,isPaid);
+                    item.setKey(mkey);
                     if(isPaid == false){
 
-                        Item item = new Item(name,table,value,isPaid);
-                        item.setKey(mkey);
                         listItem.add(item);
                     }
+                    listAllItem.add(item);
 
                 }
             } catch (JSONException e) {
@@ -89,11 +92,11 @@ public class ListOder {
         });
 
         if(onListOderChange != null)
-            onListOderChange.callBack(listItem);
+            onListOderChange.callBack(listItem, listAllItem);
 
     };
     public interface OnListOderChange{
-        void callBack(List<Item> listItem);
+        void callBack(List<Item> listItem,List<Item> listAllItem);
     }
     public void addOder(com.example.vongcat.View.TableAdapter.Item table,
                         com.example.vongcat.View.BeverageAdapter.Item beverage){
