@@ -42,7 +42,7 @@ public class Adapter extends ArrayAdapter<Item>  {
         super(context, resource, objects);
         ListOder.getInstance().setListItem(objects).setOnListOderChange(new ListOder.OnListOderChange() {
                 @Override
-                public void callBack(List<Item> itemList,List<Item> listAllItem) {
+                public void OnTodayChange(List<Item> itemList, List<Item> listAllItem) {
                     if(onDataChange != null)
                         onDataChange.callBack(itemList,listAllItem);
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -54,7 +54,12 @@ public class Adapter extends ArrayAdapter<Item>  {
                     });
 
                 }
-            });
+
+            @Override
+            public void OnAllDayChange(List<List<Item>> listItemInDay) {
+
+            }
+        });
         ListOder.getInstance().updateData(
                 ListOder.getInstance().getmJsonObject()
 

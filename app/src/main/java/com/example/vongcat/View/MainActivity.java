@@ -96,13 +96,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
         receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
+
+        loadingTxt.setVisibility(View.VISIBLE);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("check");
+        myRef.setValue("ok").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                loadingTxt.setVisibility(View.INVISIBLE);
+            }
+        });
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        finish();
         super.onBackPressed();
+        finish();
     }
 
     private void initView() {
@@ -118,14 +128,6 @@ public class MainActivity extends AppCompatActivity {
         oderLsv.setAdapter(adapterOder);
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("check");
-        myRef.setValue("ok").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                loadingTxt.setVisibility(View.INVISIBLE);
-            }
-        });
 
 
     }

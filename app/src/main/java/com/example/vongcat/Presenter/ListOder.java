@@ -3,19 +3,20 @@ package com.example.vongcat.Presenter;
 import android.util.Log;
 
 import com.example.vongcat.Model.ListOderFirebase;
-import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.View.OderAdapter.Item;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Locale;
 
 public class ListOder {
     private static ListOder ourInstance;
@@ -52,17 +53,32 @@ public class ListOder {
         listItem = list;
         return ourInstance;
     }
-    public void updateData(JSONObject listOder){
+    public void updateData(JSONObject listOderAllDay){
+        mJsonObject = listOderAllDay;
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentMonth = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
+        String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+//
+        JSONObject listOder= new JSONObject();
+        try {
+            listOder = listOderAllDay.getJSONObject(currentYear).getJSONObject(currentMonth).getJSONObject(currentDate);
 
-        mJsonObject = listOder;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         Iterator<String> keys = listOder.keys();
         listItem.clear();
         listAllItem.clear();
         while(keys.hasNext()) {
 
             String key = keys.next();
+
             try {
-                if (listOder.get(key) instanceof JSONObject) {
+//                if (listOder.get(key) instanceof JSONObject) {
                     JSONObject jsonObject = new JSONObject(listOder.get(key).toString());
                     String name = jsonObject.getString("name");
                     String table = jsonObject.getString("table");
@@ -78,7 +94,7 @@ public class ListOder {
                     }
                     listAllItem.add(item);
 
-                }
+//                }
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -96,13 +112,17 @@ public class ListOder {
             }
         });
 
+        if(onListOderChange != null){
 
-        if(onListOderChange != null)
-            onListOderChange.callBack(listItem, listAllItem);
+            onListOderChange.OnTodayChange(listItem, listAllItem);
+            onListOderChange.OnAllDayChange(listOderAllDay);
+        }
 
     };
     public interface OnListOderChange{
-        void callBack(List<Item> listItem,List<Item> listAllItem);
+        void OnTodayChange(List<Item> listItem, List<Item> listAllItem);
+        void OnAllDayChange(JSONObject listOderAllDay);
+
     }
     public void addOder(com.example.vongcat.View.TableAdapter.Item table,
                         com.example.vongcat.View.BeverageAdapter.Item beverage){
