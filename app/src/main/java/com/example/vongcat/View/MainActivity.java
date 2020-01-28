@@ -3,11 +3,13 @@ package com.example.vongcat.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     static int sumReceived=0;
 
     static int sum=0;
+    private Button logBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +95,25 @@ public class MainActivity extends AppCompatActivity {
                 receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
             }
         });
+        logBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        v.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Intent i = new Intent(v.getContext(),LogActivity.class);
+                        i.putExtra("year",year);
+                        i.putExtra("month",month+1);
+                        i.putExtra("day",dayOfMonth);
+                        startActivity(i);
+                    }
+                }, Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DATE));
+                datePickerDialog.show();
+            }
+        });
     }
 
     @Override
@@ -123,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         loadingTxt = findViewById(R.id.loadingTxt);
         soldTxt = findViewById(R.id.soldTxt);
         receivedTxt = findViewById(R.id.receivedTxt);
+        logBtn = findViewById(R.id.logBtn);
+
         itemOder = new ArrayList<>();
         adapterOder = new Adapter(this,R.layout.item_oder,itemOder);
         oderLsv.setAdapter(adapterOder);

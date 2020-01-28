@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -63,6 +64,7 @@ public class ListOder {
         try {
             listOder = listOderAllDay.getJSONObject(currentYear).getJSONObject(currentMonth).getJSONObject(currentDate);
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -70,9 +72,9 @@ public class ListOder {
 
 
 
-        Iterator<String> keys = listOder.keys();
         listItem.clear();
         listAllItem.clear();
+        Iterator<String> keys = listOder.keys();
         while(keys.hasNext()) {
 
             String key = keys.next();
@@ -112,6 +114,13 @@ public class ListOder {
             }
         });
 
+
+     
+     
+        
+        
+
+
         if(onListOderChange != null){
 
             onListOderChange.OnTodayChange(listItem, listAllItem);
@@ -121,7 +130,7 @@ public class ListOder {
     };
     public interface OnListOderChange{
         void OnTodayChange(List<Item> listItem, List<Item> listAllItem);
-        void OnAllDayChange(JSONObject listOderAllDay);
+        void OnAllDayChange(JSONObject jsonObject);
 
     }
     public void addOder(com.example.vongcat.View.TableAdapter.Item table,

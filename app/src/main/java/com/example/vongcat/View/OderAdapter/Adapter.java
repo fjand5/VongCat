@@ -28,6 +28,8 @@ import com.example.vongcat.View.MainActivity;
 import com.example.vongcat.View.MoreActivity;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class Adapter extends ArrayAdapter<Item>  {
                 }
 
             @Override
-            public void OnAllDayChange(List<List<Item>> listItemInDay) {
+            public void OnAllDayChange(JSONObject listOderAllDay) {
 
             }
         });
