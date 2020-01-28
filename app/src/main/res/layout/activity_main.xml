@@ -1,82 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainActivity"
-    android:orientation="vertical"
-    android:weightSum="10">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="@dimen/textSizeDefault"
-    android:text="Đang tải dữ liệu..."
-    android:id="@+id/loadingTxt"
-    />
-    <ListView
-        android:id="@+id/oderLsv"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".View.MainActivity">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="8"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_weight="2">
-        <Button
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
+        android:orientation="vertical"
+        android:weightSum="10"
+        >
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm món"
-            android:id="@+id/addOderBtn"
-            android:layout_weight="1"/>
-        <TextView
             android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
-            android:hint="Tổng tiền"
-            android:id="@+id/sumOderTxt"
+            android:text="Đang tải dữ liệu..."
+            android:id="@+id/loadingTxt"
+            />
+        <ListView
+            android:id="@+id/oderLsv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_weight="2">
+            <TextView
+                android:textSize="@dimen/textSizeLarg"
+                android:textAllCaps="true"
+                android:hint="Tổng tiền"
+                android:id="@+id/sumOderTxt"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:textSize="@dimen/textSizeDefault"
+                android:textAllCaps="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán"
+                android:id="@+id/payOderBtn"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thanh toán"
-            android:id="@+id/payOderBtn"/>
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <TextView
+                android:textSize="@dimen/textSizeDefault"
+                android:textAllCaps="true"
+                android:hint="Đã bán"
+                android:id="@+id/soldTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="@dimen/textSizeDefault"
+                android:textAllCaps="true"
+                android:hint=" / "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="@dimen/textSizeDefault"
+                android:textAllCaps="true"
+                android:hint="Đã thu"
+                android:id="@+id/receivedTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addOderBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_weight="1"
-        android:padding="10dp">
-
-        <TextView
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
-            android:hint="Đã bán"
-            android:id="@+id/soldTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
-            android:hint=" / "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
-            android:hint="Đã thu"
-            android:id="@+id/receivedTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="#00000000"
+        app:fabSize="normal"
+        app:maxImageSize="@dimen/design_fab_size_normal"
+   />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

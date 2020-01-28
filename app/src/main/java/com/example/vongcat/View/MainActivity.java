@@ -21,6 +21,7 @@ import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     List<Item> itemOder;
 
 
-    Button addOderBtn;
+    FloatingActionButton addOderBtn;
     Button payOderBtn;
     private static TextView sumOderTxt;
 

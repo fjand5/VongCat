@@ -15,15 +15,16 @@
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
             android:hint="Tên món"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:id="@+id/nameOderTxt"
-            android:layout_weight="1"/>
+            />
         <TextView
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
             android:hint="Giá"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/valueOderTxt"/>
@@ -31,14 +32,14 @@
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
             android:hint="Bàn"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/tableOderTxt"
             android:layout_weight="1"/>
         <Button
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/moreBtn"
             android:text="..."
