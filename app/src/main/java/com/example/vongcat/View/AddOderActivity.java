@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
@@ -19,7 +20,7 @@ import com.example.vongcat.View.TableAdapter.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddOderActivity extends Activity {
+public class AddOderActivity extends AppCompatActivity {
 
     ListView tableLsv;
     Adapter tableAdapter;

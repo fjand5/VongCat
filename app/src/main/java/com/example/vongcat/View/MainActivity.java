@@ -7,6 +7,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private Button logBtn;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -58,6 +66,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logBtn:
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Intent i = new Intent(view.getContext(),LogActivity.class);
+                        i.putExtra("year",year);
+                        i.putExtra("month",month+1);
+                        i.putExtra("day",dayOfMonth);
+                        startActivity(i);
+                    }
+                }, Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DATE));
+                datePickerDialog.show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void addEvent() {
@@ -95,25 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
             }
         });
-        logBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        v.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Intent i = new Intent(v.getContext(),LogActivity.class);
-                        i.putExtra("year",year);
-                        i.putExtra("month",month+1);
-                        i.putExtra("day",dayOfMonth);
-                        startActivity(i);
-                    }
-                }, Calendar.getInstance().get(Calendar.YEAR),
-                        Calendar.getInstance().get(Calendar.MONTH),
-                        Calendar.getInstance().get(Calendar.DATE));
-                datePickerDialog.show();
-            }
-        });
+
     }
 
     @Override

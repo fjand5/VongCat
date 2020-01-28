@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListOder;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class LogActivity extends Activity {
+public class LogActivity extends AppCompatActivity {
     String year;
     String month;
     String day;

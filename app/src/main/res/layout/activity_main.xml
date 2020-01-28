@@ -79,11 +79,4 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <Button
-        android:textSize="@dimen/textSizeDefault"
-        android:textAllCaps="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nhật Ký"
-        android:id="@+id/logBtn"/>
 </LinearLayout>

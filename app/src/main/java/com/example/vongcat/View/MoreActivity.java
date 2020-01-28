@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
@@ -20,7 +21,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoreActivity extends Activity {
+public class MoreActivity extends AppCompatActivity {
     EditText nameOderMoreTxt;
     Item oldItem;
     ListView tableOderMoreLsv;
