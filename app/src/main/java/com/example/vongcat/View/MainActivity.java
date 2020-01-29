@@ -3,10 +3,11 @@ package com.example.vongcat.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -64,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         item4Pay = new ArrayList<>();
         initView();
         addEvent();
-
-
 
     }
 
@@ -104,11 +105,44 @@ public class MainActivity extends AppCompatActivity {
         payOderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String tmp = "Chưa chọn món";
+                Map<String,Integer> data = new HashMap<>();
+                int _sum=0;
                 for (Item item :
                         item4Pay) {
-                    ListOder.getInstance().setIsPaidOder(item.getKey());
+                    _sum+=item.getValue();
+                    if(data.containsKey(item.getName())){
+                        data.put(item.getName(),data.get(item.getName())+1);
+                    }else {
+                        data.put(item.getName(),1);
+                    }
                 }
-                item4Pay.clear();
+                if(data.size()>0)
+                    tmp=data.toString()
+                            .replace("{","")
+                            .replace("}","")
+                            .replace(", ","\n")
+                            .replace("=",": ");
+                tmp+="\n"+
+                        "--------------"+"\n"+
+                        _sum +" k";
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                alert.setTitle("danh sách món");
+                alert.setMessage(tmp);
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (Item item :
+                                item4Pay) {
+                            ListOder.getInstance().setIsPaidOder(item.getKey());
+                        }
+                        item4Pay.clear();
+                    }
+                });
+                alert.setNegativeButton("Hủy",null);
+                alert.show();
+
             }
         });
         adapterOder.setOnDataChange(new Adapter.OnDataChange() {
