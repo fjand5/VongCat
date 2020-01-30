@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.vongcat.Presenter.ListExpense;
+import com.example.vongcat.Presenter.ListMaterial;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
@@ -74,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
         item4Pay = new ArrayList<>();
         initView();
         addEvent();
+        ListMaterial.getInstance().setOnListMaterialChange(new ListMaterial.OnListMaterialChange() {
+            @Override
+            public void callBack(List<String> listMaterial) {
+                Log.d("htl","onCreate: " + listMaterial);
+            }
+        });
+        ListMaterial.getInstance().setmJsonArray(
+                ListMaterial.getInstance().getmJsonArray()
+        );
 
 
     }
@@ -196,14 +206,7 @@ public class MainActivity extends AppCompatActivity {
         receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
 
         loadingTxt.setVisibility(View.VISIBLE);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("check");
-        myRef.setValue("ok").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                loadingTxt.setVisibility(View.INVISIBLE);
-            }
-        });
+
         super.onResume();
     }
 
