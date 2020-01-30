@@ -14,13 +14,6 @@
         android:id="@+id/topLayoutMainActivity"
 
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textSizeDefault"
-            android:text="Đang tải dữ liệu..."
-            android:id="@+id/loadingTxt"
-            />
         <ListView
             android:id="@+id/oderLsv"
             android:layout_width="match_parent"

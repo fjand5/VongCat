@@ -14,4 +14,10 @@
         android:icon="@drawable/ic_log_button"
         app:showAsAction="collapseActionView"
         android:title="Xuất tiền"/>
+    <item
+
+        android:id="@+id/storeManagerBtn"
+        android:icon="@drawable/ic_log_button"
+        app:showAsAction="collapseActionView"
+        android:title="Quản lý kho"/>
 </menu>

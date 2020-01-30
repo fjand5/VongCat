@@ -22,9 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.vongcat.Model.ListSupInStoreFirebase;
 import com.example.vongcat.Presenter.ListExpense;
-import com.example.vongcat.Presenter.ListMaterial;
 import com.example.vongcat.Presenter.ListOder;
+import com.example.vongcat.Presenter.ListSupInStore;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
@@ -33,6 +34,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     static List<Item> item4Pay;
-    private TextView loadingTxt;
     private TextView soldTxt;
     private TextView receivedTxt;
     static int sumSold=0;
@@ -75,15 +78,14 @@ public class MainActivity extends AppCompatActivity {
         item4Pay = new ArrayList<>();
         initView();
         addEvent();
-        ListMaterial.getInstance().setOnListMaterialChange(new ListMaterial.OnListMaterialChange() {
+
+        ListSupInStore.getInstance().setOnListSupInStoreChange(new ListSupInStore.OnListSupInStoreChange() {
             @Override
-            public void callBack(List<String> listMaterial) {
-                Log.d("htl","onCreate: " + listMaterial);
+            public void callBack(List<com.example.vongcat.View.StoreManagerAdapter.Item> listSup) {
+
             }
         });
-        ListMaterial.getInstance().setmJsonArray(
-                ListMaterial.getInstance().getmJsonArray()
-        );
+
 
 
     }
@@ -91,7 +93,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.storeManagerBtn:
+                Intent intent = new Intent(this,StoreManagerActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.logBtn:
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("name","cafe");
+                    jsonObject.put("quan",111);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ListSupInStoreFirebase.getInstance().importSup(jsonObject);
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -204,9 +219,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
         receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
-
-        loadingTxt.setVisibility(View.VISIBLE);
-
         super.onResume();
     }
 
@@ -221,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         addOderBtn = findViewById(R.id.addOderBtn);
         sumOderTxt = findViewById(R.id.sumOderTxt);
         payOderBtn= findViewById(R.id.payOderBtn);
-        loadingTxt = findViewById(R.id.loadingTxt);
+
         soldTxt = findViewById(R.id.soldTxt);
         receivedTxt = findViewById(R.id.receivedTxt);
         logBtn = findViewById(R.id.logBtn);

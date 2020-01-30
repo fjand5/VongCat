@@ -66,6 +66,7 @@ public class ListOderFirebase {
         }
     }
     public void setIsPaidOder(JSONObject oder){
+        Log.d("htl",oder.toString());
         try {
             oder.put("isPaid",true);
         } catch (JSONException e) {
