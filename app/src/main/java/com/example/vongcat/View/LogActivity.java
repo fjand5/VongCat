@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListBeverage;
+import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
@@ -31,6 +32,10 @@ public class LogActivity extends AppCompatActivity {
     List<Item> listOder = new ArrayList<>();
     List<com.example.vongcat.View.BeverageAdapter.Item> listBeverage = new ArrayList<>();
     List<String> stringData = new ArrayList<>();
+
+    int sumOfMonth =0;
+    int expsToday =0;
+    int expsThisMonth =0;
     private TextView logTxt;
 
     @Override
@@ -55,30 +60,30 @@ public class LogActivity extends AppCompatActivity {
 
             @Override
             public void OnAllDayChange(JSONObject data) {
-                listOder.clear();
-                JSONObject listOderAllDay= new JSONObject();
+                JSONObject listOderThisMonth= new JSONObject();
+                JSONObject listOderOneDay= new JSONObject();
+
                 try {
-                    listOderAllDay = data.getJSONObject(year).getJSONObject(month).getJSONObject(day);
+                    listOderThisMonth = data.getJSONObject(year).getJSONObject(month);
+                    listOderOneDay = listOderThisMonth.getJSONObject(day);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Iterator<String> keys = listOderAllDay.keys();
+
+                listOder = getListOneDay(listOderOneDay);
+                sumOfMonth =0;
+                Iterator<String> keys = listOderThisMonth.keys();
                 while(keys.hasNext()) {
                     String key = keys.next();
                     try {
-//                        if (listOderAllDay.get(key) instanceof JSONObject) {
-                            JSONObject jsonObject = new JSONObject(listOderAllDay.get(key).toString());
-                            String name = jsonObject.getString("name");
-                            String table = jsonObject.getString("table");
-                            int value = jsonObject.getInt("value");
-                            boolean isPaid = jsonObject.getBoolean("isPaid");
-                            String mkey = jsonObject.getString("key");
-
-                            Item item = new Item(name,table,value,isPaid);
-                            listOder.add(item);
-
-//                        }
+                        JSONObject jsonObject = new JSONObject(listOderThisMonth.get(key).toString());
+                        List<Item> subItem = new ArrayList<>();
+                        subItem = getListOneDay(jsonObject);
+                        for (Item item:
+                             subItem) {
+                            sumOfMonth +=item.getValue();
+                        }
                     } catch (JSONException e) {
 
                         e.printStackTrace();
@@ -102,6 +107,23 @@ public class LogActivity extends AppCompatActivity {
         ListBeverage.getInstance().updateData(
                 ListBeverage.getInstance().getmJsonArray()
         );
+
+        ListExpense.getInstance().setOnListExpsChange(new ListExpense.OnListExpsChange() {
+            @Override
+            public void OnTodayChange(int val) {
+                expsToday = val;
+                updaData();
+            }
+
+            @Override
+            public void OnThisMonthChange(int val) {
+                expsThisMonth = val;
+                updaData();
+            }
+        });
+        ListExpense.getInstance().updateData(
+                ListExpense.getInstance().getmJsonObject()
+        );
     }
 
     private void initView() {
@@ -112,7 +134,8 @@ public class LogActivity extends AppCompatActivity {
         int total=0;
         stringData.clear();
         logTxt.setText("");
-
+        stringData.add(day);
+        stringData.add("---------------");
         for (com.example.vongcat.View.BeverageAdapter.Item item :
                 listBeverage) {
             int sum = 0;
@@ -131,11 +154,42 @@ public class LogActivity extends AppCompatActivity {
             }
         }
         stringData.add("---------------");
-        stringData.add(String.valueOf(total)+" k");
+        stringData.add("Doanh thu hôm nay "+String.valueOf(total)+" k");
+        stringData.add("---------------");
+        stringData.add("Doanh thu tháng này "+String.valueOf(sumOfMonth)+" k");
+        stringData.add("---------------");
+        stringData.add("Chi tiêu hôm nay "+String.valueOf(expsToday)+" k");
+        stringData.add("---------------");
+        stringData.add("Chi tiêu tháng này "+String.valueOf(expsThisMonth)+" k");
         for (String e:
              stringData) {
             logTxt.setText(logTxt.getText()+"\n\r"+e);
         }
 
+    }
+    List<Item> getListOneDay(JSONObject listOderAllDay){
+        List<Item> ret = new ArrayList<>();
+        Iterator<String> keys = listOderAllDay.keys();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            try {
+//                        if (listOderAllDay.get(key) instanceof JSONObject) {
+                JSONObject jsonObject = new JSONObject(listOderAllDay.get(key).toString());
+                String name = jsonObject.getString("name");
+                String table = jsonObject.getString("table");
+                int value = jsonObject.getInt("value");
+                boolean isPaid = jsonObject.getBoolean("isPaid");
+                String mkey = jsonObject.getString("key");
+
+                Item item = new Item(name,table,value,isPaid);
+                ret.add(item);
+
+//                        }
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+        return ret;
     }
 }

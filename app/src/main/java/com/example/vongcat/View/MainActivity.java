@@ -8,14 +8,21 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         addEvent();
 
+
     }
 
     @Override
@@ -88,6 +96,24 @@ public class MainActivity extends AppCompatActivity {
                         Calendar.getInstance().get(Calendar.MONTH),
                         Calendar.getInstance().get(Calendar.DATE));
                 datePickerDialog.show();
+                return true;
+            case R.id.expsBtn:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Nhập số tiền xuất");
+
+                View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_input_exps, null, false);
+                final EditText moneyTxt = viewInflated.findViewById(R.id.moneyTxt);
+                final TextView textTxt = viewInflated.findViewById(R.id.textTxt);
+                builder.setView(viewInflated);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        int moneyExps = Integer.parseInt(moneyTxt.getText().toString());
+                        ListExpense.getInstance().addExps(moneyExps,textTxt.getText().toString());
+                    }
+                });
+                builder.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
