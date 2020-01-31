@@ -22,7 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.vongcat.Model.ListBeverageFirebase;
+import com.example.vongcat.Model.ListExpenseFirebase;
+import com.example.vongcat.Model.ListMaterialFirebase;
+import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.Model.ListSupInStoreFirebase;
+import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.Presenter.ListSupInStore;
@@ -76,19 +81,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         item4Pay = new ArrayList<>();
+        ListSupInStore.getInstance();
         initView();
         addEvent();
 
-        ListSupInStore.getInstance().setOnListSupInStoreChange(new ListSupInStore.OnListSupInStoreChange() {
-            @Override
-            public void callBack(List<com.example.vongcat.View.StoreManagerAdapter.Item> listSup) {
 
-            }
-        });
 
 
 
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -98,15 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.logBtn:
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("name","cafe");
-                    jsonObject.put("quan",111);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ListSupInStoreFirebase.getInstance().importSup(jsonObject);
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -222,10 +216,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
+
     }
 
     private void initView() {

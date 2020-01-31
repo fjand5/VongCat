@@ -53,17 +53,29 @@ public class Adapter extends ArrayAdapter<Item> {
 
         TextView curQuanTxt = v.findViewById(R.id.curQuanTxt);
         TextView nameSupTxt = v.findViewById(R.id.nameSupTxt);
+        curQuanTxt.setBackgroundColor(Color.WHITE);
         final EditText importQuanTxt = v.findViewById(R.id.importQuanTxt);
         Button importBtn =  v.findViewById(R.id.importBtn);
         importQuanTxt.setText("0");
         nameSupTxt.setText(getItem(position).getName() );
-        curQuanTxt.setText(Double.toString(getItem(position).getQuan()));
+        double curQuan = getItem(position).getQuan();
+        curQuanTxt.setText(Double.toString(curQuan));
+        if(curQuan<6)
+            curQuanTxt.setBackgroundColor(Color.RED);
+
 
         importBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListSupInStore.getInstance().importSub(getItem(position).getName(),
-                        Integer.valueOf(importQuanTxt.getText().toString()));
+                String tmp = importQuanTxt.getText().toString();
+
+                try {
+                    double quan = Double. parseDouble(tmp);
+                    ListSupInStore.getInstance().importSub(getItem(position).getName(),
+                        quan);
+                } catch (NumberFormatException e) {
+
+                }
             }
         });
         return v;

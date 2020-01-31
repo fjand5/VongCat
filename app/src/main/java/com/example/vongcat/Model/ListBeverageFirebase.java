@@ -32,7 +32,6 @@ public class ListBeverageFirebase {
 
                 try {
                     JSONArray jsonArray = new JSONArray(dataSnapshot.getValue().toString());
-
                     ListBeverage.getInstance().updateData(jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -99,6 +99,19 @@ public class ListSupInStore {
 
 
     }
+    public void exportSub(String name, double quan){
+
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("name",name);
+            jsonObject.put("quan",quan);
+            ListSupInStoreFirebase.getInstance().exportSup(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
     public interface OnListSupInStoreChange{
         void callBack(List<Item> listSup);
     }

@@ -19,6 +19,7 @@ public class ListSupInStoreFirebase {
     public JSONObject mJsonObject = null;
     DatabaseReference myRef;
 
+
     private static final ListSupInStoreFirebase ourInstance = new ListSupInStoreFirebase();
 
     static public ListSupInStoreFirebase getInstance() {
@@ -83,14 +84,16 @@ public class ListSupInStoreFirebase {
     public void exportSup(JSONObject sup){
         double quan=0;
         String name=null;
-        if (mJsonObject == null)
-            return;
         try {
             quan = sup.getDouble("quan");
             name = sup.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("htl","quan: " + quan
+                + "name: " + name);
+        if (mJsonObject == null)
+            return;
 
         if(name == null
                 || !mJsonObject.has(name)

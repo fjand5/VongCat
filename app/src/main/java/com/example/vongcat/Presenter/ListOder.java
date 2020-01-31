@@ -6,6 +6,7 @@ import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.View.OderAdapter.Item;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -184,5 +185,32 @@ public class ListOder {
             }
         }
         ListOderFirebase.getInstance().setIsPaidOder(jsonObject);
+
+        JSONArray listBaverage = ListBeverage.getInstance().getmJsonArray();
+        for (int i=0; i<listBaverage.length(); i++){
+            try {
+                JSONObject beveObj = listBaverage.getJSONObject(i);
+
+                if(beveObj.getString("name").equals(jsonObject.getString("name"))){
+
+                    JSONObject useObj =  beveObj.getJSONObject("use");
+
+                    Iterator<String> keys = useObj.keys();
+
+                    while(keys.hasNext()) {
+
+                        String  _key = keys.next();
+                        ListSupInStore.getInstance().exportSub(_key,
+                                useObj.getDouble(_key));
+                    }
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }
