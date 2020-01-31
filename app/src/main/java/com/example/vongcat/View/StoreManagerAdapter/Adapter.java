@@ -1,6 +1,8 @@
 package com.example.vongcat.View.StoreManagerAdapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.vongcat.Presenter.ListBeverage;
+import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListSupInStore;
 import com.example.vongcat.R;
 import com.example.vongcat.View.AddOderActivity;
@@ -54,9 +57,7 @@ public class Adapter extends ArrayAdapter<Item> {
         TextView curQuanTxt = v.findViewById(R.id.curQuanTxt);
         TextView nameSupTxt = v.findViewById(R.id.nameSupTxt);
         curQuanTxt.setBackgroundColor(Color.WHITE);
-        final EditText importQuanTxt = v.findViewById(R.id.importQuanTxt);
-        Button importBtn =  v.findViewById(R.id.importBtn);
-        importQuanTxt.setText("0");
+
         nameSupTxt.setText(getItem(position).getName() );
         double curQuan = getItem(position).getQuan();
         curQuanTxt.setText(Double.toString(curQuan));
@@ -64,18 +65,35 @@ public class Adapter extends ArrayAdapter<Item> {
             curQuanTxt.setBackgroundColor(Color.RED);
 
 
-        importBtn.setOnClickListener(new View.OnClickListener() {
+        curQuanTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tmp = importQuanTxt.getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Nhập lượng hàng muốn nhập kho");
 
-                try {
-                    double quan = Double. parseDouble(tmp);
-                    ListSupInStore.getInstance().importSub(getItem(position).getName(),
-                        quan);
-                } catch (NumberFormatException e) {
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_input_exps, null, false);
+                final EditText moneyTxt = viewInflated.findViewById(R.id.moneyTxt);
+                final TextView textTxt = viewInflated.findViewById(R.id.textTxt);
+                textTxt.setVisibility(View.INVISIBLE);
+                moneyTxt.setHint("Lượng hàng");
+                builder.setView(viewInflated);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            double quan = Double. parseDouble(moneyTxt.getText().toString());
+                            ListSupInStore.getInstance().importSub(getItem(position).getName(),
+                                    quan);
+                        } catch (NumberFormatException e) {
 
-                }
+                        }
+                    }
+                });
+                builder.show();
+
+
+
+
             }
         });
         return v;

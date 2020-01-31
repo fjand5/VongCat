@@ -20,38 +20,14 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Tên vật tư"/>
+        android:hint="Tên vật tư"
+        android:textSize="@dimen/textSizeDefault"/>
     <TextView
         android:id="@+id/curQuanTxt"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Lượng hiện tại: "/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:weightSum="3"
-        tools:ignore="Suspicious0dp">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Lượng nhập thêm: "/>
-        <EditText
-            android:id="@+id/importQuanTxt"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Lượng nhập thêm"
-            android:inputType="numberSigned"/>
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Nhập"
-            android:id="@+id/importBtn"/>
+        android:hint="Lượng hiện tại: "
+        android:textSize="@dimen/textSizeLarg"/>
     </LinearLayout>
 </LinearLayout>
