@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,9 @@ import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.TableAdapter.Adapter;
 import com.example.vongcat.View.TableAdapter.Item;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +44,7 @@ public class AddOderActivity extends AppCompatActivity {
 
     static com.example.vongcat.View.TableAdapter.Item mItemTable=null;
     static List<com.example.vongcat.View.BeverageAdapter.Item> mItemBeverage=null;
-    private static TextView tableChoiceTxt;
-    private static TextView beverageChoiceTxt;
-    private static Button doneBtn;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,18 +75,40 @@ public class AddOderActivity extends AppCompatActivity {
                         .replace("=",": ");
 
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("danh sách món");
                 alert.setMessage(tmp);
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        for (com.example.vongcat.View.BeverageAdapter.Item item:
-                                mItemBeverage) {
-                            ListOder.getInstance().addOder(mItemTable,item);
+                        if(mItemTable == null){
+                            Toast toast = new Toast(alert.getContext());
+                            TextView textView = new TextView(alert.getContext());
+                            textView.setText("chưa chọn bàn");
+                            textView.setBackgroundColor(Color.RED);
+                            textView.setTextColor(Color.WHITE);
+                            toast.setView(textView);
+                            toast.show();
+                        }else{
+                            for (com.example.vongcat.View.BeverageAdapter.Item item:
+                                    mItemBeverage) {
+                                Task<Void> task  = ListOder.getInstance().addOder(mItemTable,item);
+                                task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                       Toast toast = new Toast(alert.getContext());
+                                        TextView textView = new TextView(alert.getContext());
+                                        textView.setText("đã thay đổi xong");
+                                        textView.setBackgroundColor(Color.GREEN);
+                                        textView.setTextColor(Color.WHITE);
+                                        toast.setView(textView);
+                                        toast.show();
+                                    }
+
+                                });
+                            }
+                            finish();
                         }
-                        Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(i);
                     }
                 });
                 alert.setNegativeButton("Hủy",null);
@@ -115,17 +140,7 @@ public class AddOderActivity extends AppCompatActivity {
     }
 
     private void addEvent() {
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (com.example.vongcat.View.BeverageAdapter.Item item:
-                        mItemBeverage) {
-                    ListOder.getInstance().addOder(mItemTable,item);
-                }
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
-            }
-        });
+
 
     }
 
@@ -148,46 +163,18 @@ public class AddOderActivity extends AppCompatActivity {
         beverageAdapter = new com.example.vongcat.View.BeverageAdapter.Adapter(this,R.layout.item_beverage,itemsBeverage);
         beverageLsv.setAdapter(beverageAdapter);
 
-        tableChoiceTxt=findViewById(R.id.tableChoiceTxt);
-        beverageChoiceTxt=findViewById(R.id.beverageChoiceTxt);
 
-        doneBtn = findViewById(R.id.doneBtn);
-        doneBtn.setEnabled(false);
 
     }
 
     public static void setChoice(com.example.vongcat.View.TableAdapter.Item itemTable){
         mItemTable = itemTable;
-        if(tableChoiceTxt == null)
-            return;
-        tableChoiceTxt.setText(mItemTable.getName());
-        if(mItemTable != null
-                && mItemBeverage.size()>0){
-            doneBtn.setEnabled(true);
-        }
     };
     public static void addBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
         mItemBeverage.add(itemBeverage);
-        beverageChoiceTxt.setText(itemBeverage.getName());
-        if(mItemTable != null
-                && mItemBeverage.size()>0){
-            doneBtn.setEnabled(true);
-        }else{
-            doneBtn.setEnabled(false);
-
-        }
     };
     public static void removeBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
         mItemBeverage.remove(itemBeverage);
-
-        beverageChoiceTxt.setText(itemBeverage.getName());
-        if(mItemTable != null
-                && mItemBeverage.size()>0){
-            doneBtn.setEnabled(true);
-        }else{
-            doneBtn.setEnabled(false);
-
-        }
     };
     public static List<com.example.vongcat.View.BeverageAdapter.Item> getBeverage(){
        return mItemBeverage;

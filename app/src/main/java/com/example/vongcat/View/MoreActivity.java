@@ -1,6 +1,7 @@
 package com.example.vongcat.View;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,9 @@ import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Item;
 import com.example.vongcat.View.TableAdapter.Adapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,10 +36,12 @@ public class MoreActivity extends AppCompatActivity {
     private EditText valueOderMoreTxt;
     private Button deleteMoreBtn;
 
+    String table="";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String item = getIntent().getStringExtra("item");
+        table = getIntent().getStringExtra("table");
         Gson gson = new Gson();
         oldItem = gson.fromJson(item, Item.class);
         setContentView(R.layout.activity_more);
@@ -45,22 +53,41 @@ public class MoreActivity extends AppCompatActivity {
     private void addEvent() {
         doneMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                if(tableAdapter.getSelectedItem() != null)
+                    table=tableAdapter.getSelectedItem().getName();
                 Item newItem = new Item(
                         oldItem.getName(),
-                        tableAdapter.getSelectedItem().getName(),
+                        table,
                         oldItem.getValue(),
                         oldItem.isPaid());
                 newItem.setKey(oldItem.getKey());
-                ListOder.getInstance().editOder(oldItem,newItem);
-                finish();
+                Task<Void> task = ListOder.getInstance().editOder(oldItem,newItem);
+                task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(v.getContext(),"đã thay đổi xong",Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+
+
             }
         });
         deleteMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ListOder.getInstance().removeOder(oldItem.getKey());
-                finish();
+            public void onClick(final View v) {
+
+                    Task<Void> task = ListOder.getInstance().removeOder(oldItem.getKey());
+                    task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(v.getContext(),"đã xóa xong",Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
+
+
             }
         });
     }

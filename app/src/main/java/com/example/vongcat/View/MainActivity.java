@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vongcat.Model.ListBeverageFirebase;
 import com.example.vongcat.Model.ListExpenseFirebase;
@@ -35,6 +36,7 @@ import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -68,11 +70,14 @@ public class MainActivity extends AppCompatActivity {
     static int sumReceived=0;
 
     static int sum=0;
-    private Button logBtn;
 
+
+    MenuItem statusMnI;
+    int sumOderCurrent = 0;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        statusMnI = menu.findItem(R.id.statusTxt);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -81,10 +86,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         item4Pay = new ArrayList<>();
-        ListSupInStore.getInstance();
         initView();
         addEvent();
-
 
 
 
@@ -172,15 +175,21 @@ public class MainActivity extends AppCompatActivity {
                         "--------------"+"\n"+
                         _sum +" k";
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
                 alert.setTitle("danh sách món");
                 alert.setMessage(tmp);
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
                         for (Item item :
                                 item4Pay) {
-                            ListOder.getInstance().setIsPaidOder(item.getKey());
+                            Task<Void> task = ListOder.getInstance().setIsPaidOder(item.getKey());
+                            task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(alert.getContext(),"đã thanh toán xong",Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                         item4Pay.clear();
                     }
@@ -195,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
             public void callBack(List<Item> itemList, List<Item> listAllItem) {
                 sumSold=0;
                 sumReceived=0;
+                    if(itemList.size() == 0)
+                        statusMnI.setTitle("Đã thanh toán hết");
+                    else{
+                        statusMnI.setTitle("Còn "+ itemList.size() +" món");
+                    }
+
 
                 for (Item item :
                         listAllItem) {
@@ -211,8 +226,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
-        receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
+        soldTxt.setText("Đã bán: đang tính...");
+        receivedTxt.setText("Đã thu: đang tính...");
+        ListOder.getInstance().refesh();
         super.onResume();
     }
 
@@ -233,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
 
         soldTxt = findViewById(R.id.soldTxt);
         receivedTxt = findViewById(R.id.receivedTxt);
-        logBtn = findViewById(R.id.logBtn);
 
         itemOder = new ArrayList<>();
         adapterOder = new Adapter(this,R.layout.item_oder,itemOder);

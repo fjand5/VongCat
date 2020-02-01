@@ -46,7 +46,10 @@ public class LogActivity extends AppCompatActivity {
         month=""+getIntent().getIntExtra("month",0);
         if(month.length()==1)
             month="0"+month;
-        day=getIntent().getIntExtra("day",0)+"-"+month+"-"+year;
+        String dayTmp = ""+getIntent().getIntExtra("day",0);
+        if(dayTmp.length()==1)
+            dayTmp="0"+dayTmp;
+        day=dayTmp+"-"+month+"-"+year;
 
 
 

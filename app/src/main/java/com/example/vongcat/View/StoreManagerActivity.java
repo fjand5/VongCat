@@ -25,7 +25,6 @@ public class StoreManagerActivity extends AppCompatActivity {
 
     private void initView() {
         storeManagerLsv = findViewById(R.id.storeManagerLsv);
-
         List<Item> listItem = new ArrayList<>();
         storeManagerAdapter = new Adapter(this,R.layout.item_supply,listItem);
         storeManagerLsv.setAdapter(storeManagerAdapter);

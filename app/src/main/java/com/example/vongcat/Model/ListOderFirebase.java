@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.Presenter.ListTable;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,7 @@ public class ListOderFirebase {
     public ListOderFirebase() {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         myRef = database.getReference("ListOder");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -47,8 +49,13 @@ public class ListOderFirebase {
 
             }
         });
+
     }
-    public void addOder(JSONObject oder){
+    public void refesh(){
+
+        myRef.child("refesh").setValue(System.currentTimeMillis());
+    }
+    public Task<Void> addOder(JSONObject oder){
 
        DatabaseReference databaseReference = getTodayDatabaseReference().push();
         try {
@@ -56,42 +63,43 @@ public class ListOderFirebase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        databaseReference .setValue(oder.toString());
+        return databaseReference .setValue(oder.toString());
     }
-    public void removeOder(JSONObject oder){
+    public Task<Void> removeOder(JSONObject oder){
         try {
-            getTodayDatabaseReference().child(oder.getString("key")).setValue(null);
+            return getTodayDatabaseReference().child(oder.getString("key")).setValue(null);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return null;
     }
-    public void setIsPaidOder(JSONObject oder){
-        Log.d("htl",oder.toString());
+    public Task<Void> setIsPaidOder(JSONObject oder){
         try {
             oder.put("isPaid",true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            getTodayDatabaseReference().child(oder.getString("key")).setValue(oder.toString());
+            return getTodayDatabaseReference().child(oder.getString("key")).setValue(oder.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return null;
     }
-    public boolean editOder(JSONObject OldOder,JSONObject NewOder){
+    public  Task<Void> editOder(JSONObject OldOder,JSONObject NewOder){
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
 
             try {
                 if(OldOder.get("key").equals(NewOder.get("key"))){
 
-                    getTodayDatabaseReference().child(OldOder.getString("key")).setValue(NewOder.toString());
-                    return true;
+                   return getTodayDatabaseReference().child(OldOder.getString("key")).setValue(NewOder.toString());
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        return false;
+        return null;
     }
     private DatabaseReference getTodayDatabaseReference(){
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());

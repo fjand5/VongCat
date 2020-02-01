@@ -1,5 +1,6 @@
 package com.example.vongcat.Model;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.example.vongcat.Presenter.ListMaterial;
@@ -25,6 +26,7 @@ public class ListSupInStoreFirebase {
     static public ListSupInStoreFirebase getInstance() {
         return ourInstance;
     }
+
 
     public ListSupInStoreFirebase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();

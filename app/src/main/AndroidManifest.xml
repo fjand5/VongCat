@@ -14,14 +14,14 @@
         <activity android:name=".View.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".View.AddOderActivity"/>
         <activity android:name=".View.MoreActivity"/>
-<activity android:name=".View.LogActivity"/>
+        <activity android:name=".View.LogActivity"/>
         <activity android:name=".View.StoreManagerActivity"/>
+
     </application>
 
 </manifest>

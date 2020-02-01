@@ -62,10 +62,10 @@ public class Adapter extends ArrayAdapter<Item>  {
 
             }
         });
-        ListOder.getInstance().updateData(
-                ListOder.getInstance().getmJsonObject()
-
-        );
+//        ListOder.getInstance().updateData(
+//                ListOder.getInstance().getmJsonObject()
+//
+//        );
 
     }
 
@@ -132,6 +132,7 @@ public class Adapter extends ArrayAdapter<Item>  {
                 Gson gson = new Gson();
                 String obj  = gson.toJson(itemList.get(position));
                 i.putExtra("item",obj);
+                i.putExtra("table",itemList.get(position).getTable());
                 view.getContext().startActivity(i);
 
             }

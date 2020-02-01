@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.View.OderAdapter.Item;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -54,6 +55,9 @@ public class ListOder {
     public ListOder setListItem(List<Item> list){
         listItem = list;
         return ourInstance;
+    }
+    public void refesh(){
+        ListOderFirebase.getInstance().refesh();
     }
     public void updateData(JSONObject listOderAllDay){
         mJsonObject = listOderAllDay;
@@ -134,8 +138,8 @@ public class ListOder {
         void OnAllDayChange(JSONObject jsonObject);
 
     }
-    public void addOder(com.example.vongcat.View.TableAdapter.Item table,
-                        com.example.vongcat.View.BeverageAdapter.Item beverage){
+    public Task<Void> addOder(com.example.vongcat.View.TableAdapter.Item table,
+                              com.example.vongcat.View.BeverageAdapter.Item beverage){
         Item item = new Item(beverage.getName(),table.getName(),beverage.getValue(),false);
 
         JSONObject jsonObject = new JSONObject();
@@ -148,16 +152,16 @@ public class ListOder {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ListOderFirebase.getInstance().addOder(jsonObject);
+        return ListOderFirebase.getInstance().addOder(jsonObject);
     }
-    public void editOder(Item OldOder,
+    public  Task<Void> editOder(Item OldOder,
                          Item NewOder){
 
-        ListOderFirebase.getInstance().editOder(OldOder.getJson(),NewOder.getJson());
+        return ListOderFirebase.getInstance().editOder(OldOder.getJson(),NewOder.getJson());
     }
 
 
-    public void removeOder(String key){
+    public  Task<Void> removeOder(String key){
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -165,9 +169,9 @@ public class ListOder {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ListOderFirebase.getInstance().removeOder(jsonObject);
+        return ListOderFirebase.getInstance().removeOder(jsonObject);
     }
-    public void setIsPaidOder(String key){
+    public  Task<Void> setIsPaidOder(String key){
         JSONObject jsonObject = new JSONObject();
         for (Item item:
         listItem) {
@@ -184,33 +188,6 @@ public class ListOder {
                 break;
             }
         }
-        ListOderFirebase.getInstance().setIsPaidOder(jsonObject);
-
-        JSONArray listBaverage = ListBeverage.getInstance().getmJsonArray();
-        for (int i=0; i<listBaverage.length(); i++){
-            try {
-                JSONObject beveObj = listBaverage.getJSONObject(i);
-
-                if(beveObj.getString("name").equals(jsonObject.getString("name"))){
-
-                    JSONObject useObj =  beveObj.getJSONObject("use");
-
-                    Iterator<String> keys = useObj.keys();
-
-                    while(keys.hasNext()) {
-
-                        String  _key = keys.next();
-                        ListSupInStore.getInstance().exportSub(_key,
-                                useObj.getDouble(_key));
-                    }
-
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        return ListOderFirebase.getInstance().setIsPaidOder(jsonObject);
     }
 }
