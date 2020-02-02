@@ -3,24 +3,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="3"
+    android:paddingHorizontal="10dp"
     >
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="5"
-        android:layout_weight="2">
-        <TextView
+        android:weightSum="6">
+        <CheckBox
             android:textSize="@dimen/textSizeDefault"
+            android:button="@android:color/transparent"
             android:textAllCaps="true"
-            android:hint="Tên món"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:id="@+id/nameOderTxt"
-            />
+            android:id="@+id/isPaidChb"
+            android:ellipsize="end"
+            android:maxLines="2"/>
         <TextView
+            android:textColor="#000000"
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
             android:hint="Giá"
@@ -29,6 +30,7 @@
             android:layout_weight="1"
             android:id="@+id/valueOderTxt"/>
         <TextView
+            android:textColor="#000000"
             android:textSize="@dimen/textSizeDefault"
             android:textAllCaps="true"
             android:hint="Bàn"
@@ -42,15 +44,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/moreBtn"
-            android:text="..."
-            android:layout_weight="1"/>
+            android:background="@drawable/ic_more_btn"
+            android:layout_weight="1"
+            />
 
 
     </LinearLayout>
 
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/isPaidChb"/>
+
 </LinearLayout>

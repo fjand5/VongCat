@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -59,13 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     FloatingActionButton addOderBtn;
-    Button payOderBtn;
-    private static TextView sumOderTxt;
+    static Button payOderBtn;
 
 
     static List<Item> item4Pay;
-    private TextView soldTxt;
-    private TextView receivedTxt;
+
     static int sumSold=0;
     static int sumReceived=0;
 
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     MenuItem statusMnI;
-    int sumOderCurrent = 0;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
@@ -86,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         item4Pay = new ArrayList<>();
+
         initView();
         addEvent();
 
@@ -204,11 +203,8 @@ public class MainActivity extends AppCompatActivity {
             public void callBack(List<Item> itemList, List<Item> listAllItem) {
                 sumSold=0;
                 sumReceived=0;
-                    if(itemList.size() == 0)
-                        statusMnI.setTitle("Đã thanh toán hết");
-                    else{
-                        statusMnI.setTitle("Còn "+ itemList.size() +" món");
-                    }
+
+
 
 
                 for (Item item :
@@ -217,8 +213,13 @@ public class MainActivity extends AppCompatActivity {
                     if(item.isPaid())
                         sumReceived+=item.getValue();
                 }
-                soldTxt.setText("Đã bán: " + String.valueOf(sumSold)+"k");
-                receivedTxt.setText("Đã thu: " + String.valueOf(sumReceived)+"k");
+                if(sumReceived == sumSold){
+                    statusMnI.setTitle("Đã thanh toán hết " + sumSold+"k");
+                }else{
+
+                    statusMnI.setTitle("Còn "+ (sumReceived)+"k/"+sumSold+"k ");
+                }
+
             }
         });
 
@@ -226,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        soldTxt.setText("Đã bán: đang tính...");
-        receivedTxt.setText("Đã thu: đang tính...");
         ListOder.getInstance().refesh();
         super.onResume();
     }
@@ -244,11 +243,8 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         oderLsv = findViewById(R.id.oderLsv);
         addOderBtn = findViewById(R.id.addOderBtn);
-        sumOderTxt = findViewById(R.id.sumOderTxt);
-        payOderBtn= findViewById(R.id.payOderBtn);
 
-        soldTxt = findViewById(R.id.soldTxt);
-        receivedTxt = findViewById(R.id.receivedTxt);
+        payOderBtn= findViewById(R.id.payOderBtn);
 
         itemOder = new ArrayList<>();
         adapterOder = new Adapter(this,R.layout.item_oder,itemOder);
@@ -277,7 +273,10 @@ public class MainActivity extends AppCompatActivity {
                 item4Pay) {
             sum+=e.getValue();
         }
-        sumOderTxt.setText(String.valueOf(sum));
+        if(sum>0)
+        payOderBtn.setText("thanh toán: "+String.valueOf(sum) + "k");
+        else
+            payOderBtn.setText("thanh toán");
     }
     public static List<Item> getOder4Pay(){
         return  item4Pay;

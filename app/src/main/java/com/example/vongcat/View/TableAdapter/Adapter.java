@@ -57,7 +57,6 @@ Item selectedItem = null;
         final CheckBox isSelectTableChb = v.findViewById(R.id.isSelectTableChb);
 
         nameTableTxt.setText(ListTable.getInstance().getListItem().get(position).getName());
-
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Item;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoreActivity extends AppCompatActivity {
-    EditText nameOderMoreTxt;
+    Spinner nameOderMoreSpn;
     Item oldItem;
     ListView tableOderMoreLsv;
     Adapter tableAdapter;
@@ -36,6 +39,8 @@ public class MoreActivity extends AppCompatActivity {
     private EditText valueOderMoreTxt;
     private Button deleteMoreBtn;
 
+    List<String> arrStringNameBeve;
+    ArrayAdapter<String> adapterBeve;
     String table="";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +53,24 @@ public class MoreActivity extends AppCompatActivity {
 
         initView();
         addEvent();
+
+        ListBeverage.getInstance().setOnListBeverageChange(new ListBeverage.OnListBeverageChange() {
+            @Override
+            public void callBack(List<com.example.vongcat.View.BeverageAdapter.Item> listBeverage) {
+                arrStringNameBeve.clear();
+                arrStringNameBeve.add(oldItem.getName());
+                for (com.example.vongcat.View.BeverageAdapter.Item item:
+                        listBeverage) {
+                    if(!item.getName().equals(oldItem.getName()))
+                        arrStringNameBeve.add(item.getName());
+                }
+            }
+        });
+        ListBeverage.getInstance().updateData(
+                ListBeverage.getInstance().getmJsonArray()
+        );
+
+
     }
 
     private void addEvent() {
@@ -56,8 +79,10 @@ public class MoreActivity extends AppCompatActivity {
             public void onClick(final View v) {
                 if(tableAdapter.getSelectedItem() != null)
                     table=tableAdapter.getSelectedItem().getName();
+
+                String name = nameOderMoreSpn.getSelectedItem().toString();
                 Item newItem = new Item(
-                        oldItem.getName(),
+                        name,
                         table,
                         oldItem.getValue(),
                         oldItem.isPaid());
@@ -93,9 +118,17 @@ public class MoreActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        nameOderMoreTxt = findViewById(R.id.nameOderMoreTxt);
-        nameOderMoreTxt.setText(oldItem.getName());
+        nameOderMoreSpn = findViewById(R.id.nameOderMoreSpn);
+        arrStringNameBeve = new ArrayList<>();
+        arrStringNameBeve.add(oldItem.getName());
+        adapterBeve = new ArrayAdapter<>(this,
+                R.layout.spiner_item,
+                arrStringNameBeve);
 
+
+
+
+        nameOderMoreSpn.setAdapter(adapterBeve);
         valueOderMoreTxt=findViewById(R.id.valueOderMoreTxt);
         valueOderMoreTxt.setText(String.valueOf(oldItem.getValue()));
 

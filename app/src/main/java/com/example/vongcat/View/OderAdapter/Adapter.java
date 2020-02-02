@@ -78,24 +78,30 @@ public class Adapter extends ArrayAdapter<Item>  {
         if (v == null)
          v = LayoutInflater.from(getContext()).inflate(R.layout.item_oder,parent,false);
 
-        TextView nameOderTxt=v.findViewById(R.id.nameOderTxt);
         TextView valueOderTxt=v.findViewById(R.id.valueOderTxt);
         TextView tableOderTxt = v.findViewById(R.id.tableOderTxt);
         CheckBox isPaidChb= v.findViewById(R.id.isPaidChb);
         Button moreBtn = v.findViewById(R.id.moreBtn);
 
         final List<Item> itemList = ListOder.getInstance().getListItem();
+
+        isPaidChb.setText(itemList.get(position).getName());
+        valueOderTxt.setText(String.valueOf(itemList.get(position).getValue())+"k");
+        tableOderTxt.setText(itemList.get(position).getTable());
+
+
         isPaidChb.setChecked(false);
+        v.setBackgroundColor(Color.WHITE);
         for (Item item:
              MainActivity.getOder4Pay()) {
-            if(item.getKey().equals(itemList.get(position).getKey()))
+            if(item.getKey().equals(itemList.get(position).getKey())){
                 isPaidChb.setChecked(true);
+                v.setBackgroundColor(Color.GRAY);
+            }
         }
 
 
-        nameOderTxt.setText( itemList.get(position).getName());
-        valueOderTxt.setText(String.valueOf(itemList.get(position).getValue())+"k");
-        tableOderTxt.setText(itemList.get(position).getTable());
+
 
         if(itemList.get(position).isPaid() == true)
             v.setBackgroundColor(Color.RED);
@@ -123,6 +129,7 @@ public class Adapter extends ArrayAdapter<Item>  {
                 }else{  // remove
                     MainActivity.removeOder4Pay(itemList.get(position));
                 }
+                notifyDataSetChanged();
             }
         });
         moreBtn.setOnClickListener(new View.OnClickListener() {
