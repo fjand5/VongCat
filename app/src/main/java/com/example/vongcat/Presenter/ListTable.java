@@ -8,6 +8,7 @@ import com.example.vongcat.View.TableAdapter.Item;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -50,6 +51,7 @@ public class ListTable{
 
     private ListTable() {
         mJsonArray = new JSONArray();
+        listItem = new ArrayList<>();
         ListTableFirebase.getInstance();
 
     }

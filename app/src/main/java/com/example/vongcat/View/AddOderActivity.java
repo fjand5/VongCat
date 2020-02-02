@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListOder;
+import com.example.vongcat.Presenter.ListTable;
 import com.example.vongcat.R;
 import com.example.vongcat.View.TableAdapter.Adapter;
 import com.example.vongcat.View.TableAdapter.Item;
@@ -36,18 +41,19 @@ import java.util.Map;
 import java.util.Set;
 
 public class AddOderActivity extends AppCompatActivity {
+    final static String TABLE_SPINER_LABEL = "Vui lòng chọn bàn trước";
+    Spinner tableSpn;
 
-    ListView tableLsv;
-    Adapter tableAdapter;
-
-    ListView beverageLsv;
-    com.example.vongcat.View.BeverageAdapter.Adapter beverageAdapter;
+    static ListView beverageLsv;
+    static com.example.vongcat.View.BeverageAdapter.Adapter beverageAdapter;
 
     static com.example.vongcat.View.TableAdapter.Item mItemTable=null;
     static List<com.example.vongcat.View.BeverageAdapter.Item> mItemBeverage=null;
 
     FloatingActionButton submitOderFab;
     static MenuItem statusMni;
+
+    List<String> arrStringNameTable;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actviti_add_oder,menu);
@@ -74,9 +80,36 @@ public class AddOderActivity extends AppCompatActivity {
         mItemBeverage = new ArrayList<>();
         initView();
         addEvent();
+        ListTable.getInstance().setOnListTableChange(new ListTable.OnListTableChange() {
+            @Override
+            public void callBack(List<Item> listItem) {
+                arrStringNameTable.clear();
+                arrStringNameTable.add(TABLE_SPINER_LABEL);
+                for (Item item :
+                        listItem) {
+                    arrStringNameTable.add(item.getName());
+                }
+            }
+        });
+        ListTable.getInstance().updateData(
+                ListTable.getInstance().getmJsonArray()
+        );
     }
 
     private void addEvent() {
+        tableSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nameTable = adapterView.getItemAtPosition(i).toString();
+                Item item = new Item(nameTable,0);
+                setChoice(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         submitOderFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +138,8 @@ public class AddOderActivity extends AppCompatActivity {
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if(!tableSpn.getSelectedItem().toString().equals(TABLE_SPINER_LABEL))
+                            mItemTable = new Item(tableSpn.getSelectedItem().toString(),0);
                         if(mItemTable == null){
                             Toast toast = new Toast(alert.getContext());
                             TextView textView = new TextView(alert.getContext());
@@ -143,23 +178,28 @@ public class AddOderActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        tableLsv= findViewById(R.id.tableLsv);
-        TextView headerViewTableLsv = new TextView(this);
-        headerViewTableLsv.setText("Chọn bàn");
-        tableLsv.addHeaderView(headerViewTableLsv);
+        tableSpn= findViewById(R.id.tableSpn);
+        arrStringNameTable = new ArrayList<>();
+        arrStringNameTable.add(TABLE_SPINER_LABEL);
+        ArrayAdapter<String> adapterTable = new ArrayAdapter<String>(this,
+                R.layout.spiner_item,
+                arrStringNameTable);
+        tableSpn.setAdapter(adapterTable);
 
-        List<Item> items = new ArrayList<>();
-        tableAdapter = new Adapter(this,R.layout.item_table,items);
-        tableLsv.setAdapter(tableAdapter);
 
         beverageLsv = findViewById(R.id.beverageLsv);
         TextView headerViewBeverageLsv = new TextView(this);
+        headerViewBeverageLsv.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimensionPixelSize(R.dimen.textSizeDefault));
+        headerViewBeverageLsv.setTextColor(Color.BLACK);
+        headerViewBeverageLsv.setAllCaps(true);
         headerViewBeverageLsv.setText("Chọn món");
         beverageLsv.addHeaderView(headerViewBeverageLsv);
 
         List<com.example.vongcat.View.BeverageAdapter.Item> itemsBeverage = new ArrayList<>();
         beverageAdapter = new com.example.vongcat.View.BeverageAdapter.Adapter(this,R.layout.item_beverage,itemsBeverage);
         beverageLsv.setAdapter(beverageAdapter);
+        beverageLsv.setVisibility(View.INVISIBLE);
 
         submitOderFab = findViewById(R.id.submitOderFab);
 
@@ -167,7 +207,16 @@ public class AddOderActivity extends AppCompatActivity {
 
     public static void setChoice(com.example.vongcat.View.TableAdapter.Item itemTable){
         mItemTable = itemTable;
-        statusMni.setTitle("Chọn bàn " + itemTable.getName());
+
+        if(itemTable.getName().equals(TABLE_SPINER_LABEL)){
+            beverageLsv.setVisibility(View.INVISIBLE);
+            mItemBeverage.clear();
+            statusMni.setTitle("Chọn bàn");
+        }else{
+            beverageLsv.setVisibility(View.VISIBLE);
+            statusMni.setTitle("Chọn bàn " + itemTable.getName());
+        }
+        beverageAdapter.notifyDataSetChanged();
     };
     public static void addBeverage(com.example.vongcat.View.BeverageAdapter.Item itemBeverage ){
         mItemBeverage.add(itemBeverage);
