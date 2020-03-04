@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ListSupInStoreFirebase {
-
+    static FirebaseDatabase database;
     public JSONObject mJsonObject = null;
     DatabaseReference myRef;
 
@@ -24,12 +24,14 @@ public class ListSupInStoreFirebase {
     private static final ListSupInStoreFirebase ourInstance = new ListSupInStoreFirebase();
 
     static public ListSupInStoreFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         return ourInstance;
     }
 
 
     public ListSupInStoreFirebase() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         myRef = database.getReference("SupInStore");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

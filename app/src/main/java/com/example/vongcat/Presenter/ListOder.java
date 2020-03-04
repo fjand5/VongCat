@@ -48,13 +48,11 @@ public class ListOder {
     }
 
     private ListOder() {
+        listItem = new ArrayList<>();
         listAllItem = new ArrayList<>();
         mJsonObject = new JSONObject();
+
         ListOderFirebase.getInstance();
-    }
-    public ListOder setListItem(List<Item> list){
-        listItem = list;
-        return ourInstance;
     }
     public void refesh(){
         ListOderFirebase.getInstance().refesh();
@@ -127,7 +125,6 @@ public class ListOder {
 
 
         if(onListOderChange != null){
-
             onListOderChange.OnTodayChange(listItem, listAllItem);
             onListOderChange.OnAllDayChange(listOderAllDay);
         }

@@ -8,6 +8,8 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,9 +31,11 @@ import com.example.vongcat.Model.ListMaterialFirebase;
 import com.example.vongcat.Model.ListOderFirebase;
 import com.example.vongcat.Model.ListSupInStoreFirebase;
 import com.example.vongcat.Model.ListTableFirebase;
+import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.Presenter.ListSupInStore;
+import com.example.vongcat.Presenter.ListTable;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
@@ -42,15 +46,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,11 +80,14 @@ public class MainActivity extends AppCompatActivity {
     static int sum=0;
 
 
-    MenuItem statusMnI;
+    MenuItem statusMnI = null;
+    MenuItem listOderBtn = null;
+    boolean showAllOder = false;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         statusMnI = menu.findItem(R.id.statusTxt);
+        listOderBtn = menu.findItem(R.id.listOderBtn);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -84,39 +96,95 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         item4Pay = new ArrayList<>();
-
-        initView();
-        addEvent();
-
-
-
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     }
 
+    private void initSys() {
+
+        ListTable.getInstance();
+        ListBeverage.getInstance();
+        ListOder.getInstance().setOnListOderChange(new ListOder.OnListOderChange() {
+            @Override
+            public void OnTodayChange(List<Item> itemPaidList, List<Item> listAllItem) {
+                itemOder.clear();
+
+                Collections.sort(listAllItem, new Comparator<Item>() {
+                    @Override
+                    public int compare(Item o1, Item o2) {
+                        return o1.getKey().compareTo(o2.getKey());
+                    }
+                });
+
+                if(showAllOder)
+                for (Item item :
+                        listAllItem) {
+                    itemOder.add(item);
+                }
+                else
+                    for (Item item :
+                            itemPaidList) {
+                        itemOder.add(item);
+                    }
+                adapterOder.notifyDataSetChanged();
+
+                sumSold=0;
+                sumReceived=0;
+                for (Item item :
+                        listAllItem) {
+                    sumSold+=item.getValue();
+                    if(item.isPaid())
+                        sumReceived+=item.getValue();
+                }
+                if(statusMnI == null)
+                    return;
+                if(sumReceived == sumSold){
+                    statusMnI.setTitle("Đã thanh toán hết " + sumSold+"k");
+                }else{
+
+                    statusMnI.setTitle("Đã thu "+ (sumReceived)+"k/"+sumSold+"k ");
+                }
+
+            }
+
+            @Override
+            public void OnAllDayChange(JSONObject jsonObject) {
+
+            }
+        });
+        ListOder.getInstance().updateData(
+                ListOder.getInstance().getmJsonObject()
+
+        );
+    }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.listOderBtn:
+                if(showAllOder){
+
+                    showAllOder = false;
+                    listOderBtn.setTitle("Xem tất cả");
+                }
+                else {
+
+                    showAllOder = true;
+                    listOderBtn.setTitle("Xem chưa t.toán");
+                }
+                ListOder.getInstance().updateData(
+                        ListOder.getInstance().getmJsonObject()
+
+                );
+                return true;
             case R.id.storeManagerBtn:
                 Intent intent = new Intent(this,StoreManagerActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.logBtn:
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Intent i = new Intent(view.getContext(),LogActivity.class);
-                        i.putExtra("year",year);
-                        i.putExtra("month",month+1);
-                        i.putExtra("day",dayOfMonth);
-                        startActivity(i);
-                    }
-                }, Calendar.getInstance().get(Calendar.YEAR),
-                        Calendar.getInstance().get(Calendar.MONTH),
-                        Calendar.getInstance().get(Calendar.DATE));
-                datePickerDialog.show();
+                Intent i = new Intent(this,LogActivity.class);
+                startActivity(i);
                 return true;
             case R.id.expsBtn:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -198,49 +266,39 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        adapterOder.setOnDataChange(new Adapter.OnDataChange() {
+
+        adapterOder.setOnMoreButtonClick(new Adapter.OnMoreButtonClick() {
             @Override
-            public void callBack(List<Item> itemList, List<Item> listAllItem) {
-                sumSold=0;
-                sumReceived=0;
-
-
-
-
-                for (Item item :
-                        listAllItem) {
-                    sumSold+=item.getValue();
-                    if(item.isPaid())
-                        sumReceived+=item.getValue();
-                }
-                if(sumReceived == sumSold){
-                    statusMnI.setTitle("Đã thanh toán hết " + sumSold+"k");
-                }else{
-
-                    statusMnI.setTitle("Còn "+ (sumReceived)+"k/"+sumSold+"k ");
-                }
-
+            public void callBack(View v, Item item) {
+                Intent i = new Intent(v.getContext(), MoreActivity.class);
+                Gson gson = new Gson();
+                String obj  = gson.toJson(item);
+                i.putExtra("item",obj);
+                i.putExtra("table",item.getTable());
+                v.getContext().startActivity(i);
             }
         });
+
 
     }
 
     @Override
     protected void onResume() {
+
+        initView();
+        addEvent();
+        initSys();
         ListOder.getInstance().refesh();
+
         super.onResume();
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
-
-    }
-
     private void initView() {
+
+
+
+
         oderLsv = findViewById(R.id.oderLsv);
         addOderBtn = findViewById(R.id.addOderBtn);
 

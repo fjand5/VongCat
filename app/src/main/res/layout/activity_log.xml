@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activityLogLyt"
+    android:weightSum="10">
+
+       <devs.mulham.horizontalcalendar.HorizontalCalendarView
+           android:id="@+id/calendarView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@color/colorPrimary"
+           app:textColorSelected="#000" />
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="9"
+    android:id="@+id/logOderLsv"/>
 <TextView
     android:inputType="textMultiLine"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/logTxt"/>
+    android:layout_height="0dp"
+    android:layout_weight="0.5"
+    android:id="@+id/revenueTxt"
+    android:gravity="fill_vertical"
+    android:textStyle="bold"
+
+    />
+       <TextView
+           android:inputType="textMultiLine"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="0.5"
+           android:id="@+id/spendTxt"
+           android:gravity="fill_vertical"
+           android:textStyle="bold"
+           />
 </LinearLayout>

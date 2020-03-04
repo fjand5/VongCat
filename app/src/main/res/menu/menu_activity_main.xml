@@ -10,6 +10,12 @@
         android:title="Trạng thái"/>
     <item
 
+        android:id="@+id/listOderBtn"
+        android:icon="@drawable/ic_log_button"
+        app:showAsAction="collapseActionView"
+        android:title="Xem tất cả"/>
+    <item
+
         android:id="@+id/logBtn"
         android:icon="@drawable/ic_log_button"
         app:showAsAction="collapseActionView"

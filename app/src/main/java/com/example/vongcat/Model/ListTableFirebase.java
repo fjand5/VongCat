@@ -17,15 +17,18 @@ import org.json.JSONObject;
 import java.io.Reader;
 
 public class ListTableFirebase {
+    static FirebaseDatabase database;
     DatabaseReference myRef;
     private static final ListTableFirebase ourInstance = new ListTableFirebase();
 
     static public ListTableFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         return ourInstance;
     }
 
     public ListTableFirebase() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListTable");
 //        myRef.goOffline();
 

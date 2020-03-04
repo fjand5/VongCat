@@ -21,10 +21,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ListOderFirebase {
+    static FirebaseDatabase database;
     DatabaseReference myRef;
     private static  ListOderFirebase ourInstance;
 
     static public ListOderFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         if(ourInstance == null)
             ourInstance = new ListOderFirebase();
         return ourInstance;

@@ -31,44 +31,25 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Adapter extends ArrayAdapter<Item>  {
-    OnDataChange onDataChange;
 
-    public void setOnDataChange(OnDataChange onDataChange) {
-        this.onDataChange = onDataChange;
+    OnMoreButtonClick onMoreButtonClick;
+
+
+    List<Item> itemList;
+    public void setOnMoreButtonClick(OnMoreButtonClick onMoreButtonClick) {
+        this.onMoreButtonClick = onMoreButtonClick;
     }
+
+
 
     public Adapter(@NonNull Context context, int resource, @NonNull List<Item> objects) {
         super(context, resource, objects);
-        ListOder.getInstance().setListItem(objects).setOnListOderChange(new ListOder.OnListOderChange() {
-                @Override
-                public void OnTodayChange(List<Item> itemList, List<Item> listAllItem) {
-                    if(onDataChange != null)
-                        onDataChange.callBack(itemList,listAllItem);
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            MainActivity.clearOder4Pay();
-                        notifyDataSetChanged();
-                        }
-                    });
-
-                }
-
-            @Override
-            public void OnAllDayChange(JSONObject listOderAllDay) {
-
-            }
-        });
-//        ListOder.getInstance().updateData(
-//                ListOder.getInstance().getmJsonObject()
-//
-//        );
-
+        itemList = objects;
     }
-
 
     @NonNull
     @Override
@@ -82,8 +63,6 @@ public class Adapter extends ArrayAdapter<Item>  {
         TextView tableOderTxt = v.findViewById(R.id.tableOderTxt);
         CheckBox isPaidChb= v.findViewById(R.id.isPaidChb);
         Button moreBtn = v.findViewById(R.id.moreBtn);
-
-        final List<Item> itemList = ListOder.getInstance().getListItem();
 
         isPaidChb.setText(itemList.get(position).getName());
         valueOderTxt.setText(String.valueOf(itemList.get(position).getValue())+"k");
@@ -104,7 +83,7 @@ public class Adapter extends ArrayAdapter<Item>  {
 
 
         if(itemList.get(position).isPaid() == true)
-            v.setBackgroundColor(Color.RED);
+            v.setBackgroundColor(Color.GREEN);
         tableOderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,20 +114,18 @@ public class Adapter extends ArrayAdapter<Item>  {
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), MoreActivity.class);
-                Gson gson = new Gson();
-                String obj  = gson.toJson(itemList.get(position));
-                i.putExtra("item",obj);
-                i.putExtra("table",itemList.get(position).getTable());
-                view.getContext().startActivity(i);
+                if(onMoreButtonClick != null)
+                    onMoreButtonClick.callBack(view, itemList.get(position));
+
 
             }
         });
 
         return v;
     }
-    public interface OnDataChange{
-        void callBack(List<Item> itemList,List<Item> listAllItem);
+
+    public interface OnMoreButtonClick{
+        void callBack(View v, Item item);
     }
 
 }

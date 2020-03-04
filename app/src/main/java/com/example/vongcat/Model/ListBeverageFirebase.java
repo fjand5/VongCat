@@ -15,17 +15,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ListBeverageFirebase {
+    static FirebaseDatabase database;
     DatabaseReference myRef;
     private static final ListBeverageFirebase ourInstance = new ListBeverageFirebase();
 
     static public ListBeverageFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         return ourInstance;
     }
 
     public ListBeverageFirebase() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListBeverage");
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

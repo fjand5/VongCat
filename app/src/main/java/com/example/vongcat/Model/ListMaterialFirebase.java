@@ -12,15 +12,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class ListMaterialFirebase {
+    static FirebaseDatabase database;
     DatabaseReference myRef;
     private static final ListMaterialFirebase ourInstance = new ListMaterialFirebase();
 
     static public ListMaterialFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         return ourInstance;
     }
 
     public ListMaterialFirebase() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListMaterial");
 
         myRef.addValueEventListener(new ValueEventListener() {

@@ -17,10 +17,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ListExpenseFirebase {
+    static FirebaseDatabase database;
+
     DatabaseReference myRef;
     private static ListExpenseFirebase ourInstance;
 
     static public ListExpenseFirebase getInstance() {
+        database = FirebaseDatabase.getInstance();
+        database.goOnline();
         if(ourInstance == null)
             ourInstance = new ListExpenseFirebase();
         return ourInstance;
@@ -28,7 +32,7 @@ public class ListExpenseFirebase {
 
     public ListExpenseFirebase() {
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+       database = FirebaseDatabase.getInstance();
         myRef = database.getReference("ListExpense");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

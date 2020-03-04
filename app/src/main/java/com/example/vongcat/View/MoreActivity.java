@@ -92,10 +92,10 @@ public class MoreActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(v.getContext(),"đã thay đổi xong",Toast.LENGTH_LONG).show();
-                                finish();
+
                             }
                         });
-
+                finish();
 
             }
         });
@@ -108,11 +108,11 @@ public class MoreActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(v.getContext(),"đã xóa xong",Toast.LENGTH_LONG).show();
-                                    finish();
+
                                 }
                             });
 
-
+                finish();
             }
         });
     }

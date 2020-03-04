@@ -1,44 +1,35 @@
 package com.example.vongcat.View;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.Presenter.ListTable;
 import com.example.vongcat.R;
-import com.example.vongcat.View.TableAdapter.Adapter;
 import com.example.vongcat.View.TableAdapter.Item;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class AddOderActivity extends AppCompatActivity {
     final static String TABLE_SPINER_LABEL = "Vui lòng chọn bàn trước";
@@ -56,7 +47,7 @@ public class AddOderActivity extends AppCompatActivity {
     List<String> arrStringNameTable;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actviti_add_oder,menu);
+        getMenuInflater().inflate(R.menu.menu_actvity_add_oder,menu);
         statusMni = menu.findItem(R.id.statusMni);
         return super.onCreateOptionsMenu(menu);
     }
@@ -211,7 +202,7 @@ public class AddOderActivity extends AppCompatActivity {
         if(itemTable.getName().equals(TABLE_SPINER_LABEL)){
             beverageLsv.setVisibility(View.INVISIBLE);
             mItemBeverage.clear();
-            statusMni.setTitle("Chọn bàn");
+            statusMni.setTitle("chưa chọn bàn");
         }else{
             beverageLsv.setVisibility(View.VISIBLE);
             statusMni.setTitle("Chọn bàn " + itemTable.getName());

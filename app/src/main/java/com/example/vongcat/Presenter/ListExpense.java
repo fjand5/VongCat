@@ -48,6 +48,7 @@ public class ListExpense {
         String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
         if(onListExpsChange == null)
             return;
+        onListExpsChange.OnDataChange(jsonData);
         try {
             onListExpsChange.OnTodayChange(
                     getSumValueOneDay( jsonData.getJSONObject(currentYear)
@@ -62,33 +63,18 @@ public class ListExpense {
         }
 
 
-        JSONObject monthJson = new JSONObject();
-        int sumMonth=0;
         try {
-            monthJson= jsonData.getJSONObject(currentYear)
-                    .getJSONObject(currentMonth);
+            onListExpsChange.OnThisMonthChange(getSumValueOneMonth(jsonData.getJSONObject(currentYear)
+                    .getJSONObject(currentMonth)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Iterator<String> keys = monthJson.keys();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            try {
-
-                JSONObject jsonObject = new JSONObject(monthJson.get(key).toString());
-                sumMonth+=getSumValueOneDay(jsonObject);
-//                        }
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-            }
-        }
-        onListExpsChange.OnThisMonthChange(sumMonth);
 
     };
     public interface OnListExpsChange{
         void OnTodayChange(int val);
         void OnThisMonthChange(int val);
+        void OnDataChange(JSONObject jsonObject);
 
     }
     public void addExps(int value,
@@ -116,7 +102,7 @@ public class ListExpense {
         }
         ListExpenseFirebase.getInstance().removeExps(jsonObject);
     }
-    int getSumValueOneDay(JSONObject listOderAllDay){
+    static public int getSumValueOneDay(JSONObject listOderAllDay){
         int ret = 0;
         Iterator<String> keys = listOderAllDay.keys();
         while(keys.hasNext()) {
@@ -136,5 +122,22 @@ public class ListExpense {
             }
         }
         return ret;
+    }
+    static public int getSumValueOneMonth(JSONObject monthJson){
+        int sumMonth=0;
+        Iterator<String> keys = monthJson.keys();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            try {
+
+                JSONObject jsonObject = new JSONObject(monthJson.get(key).toString());
+                sumMonth+=getSumValueOneDay(jsonObject);
+//                        }
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+        return sumMonth;
     }
 }

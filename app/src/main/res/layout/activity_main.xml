@@ -28,6 +28,7 @@
             android:layout_weight="2"
             android:paddingBottom="10dp">
            <Button
+
                 android:ellipsize="end"
                 android:textAllCaps="true"
                 android:layout_width="0dp"
