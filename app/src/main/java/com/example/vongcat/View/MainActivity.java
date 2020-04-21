@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     boolean showAllOder = false;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //moi
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         statusMnI = menu.findItem(R.id.statusTxt);
         listOderBtn = menu.findItem(R.id.listOderBtn);
