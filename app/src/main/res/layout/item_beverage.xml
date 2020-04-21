@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="6"
+    android:paddingHorizontal="5dp"
+    android:paddingBottom="3dp"
 
-        <TextView
-            android:textSize="@dimen/textSizeDefault"
+>
+
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:text="s.l"
             android:textAllCaps="true"
             android:hint="Tên món"
             android:id="@+id/nameBeverageTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
-        <TextView
-            android:textSize="@dimen/textSizeDefault"
-            android:textAllCaps="true"
-            android:hint="Giá"
-            android:id="@+id/valueBeverageTxt"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center_vertical"/>
-        <TextView
-            android:text="s.l"
-            android:textSize="@dimen/textSizeLarg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/quanBeverageTxt"
-            android:layout_gravity="center_vertical"/>
-        <Button
-            android:text="+"
-            android:id="@+id/incBeverageBtn"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
-
-        <Button
-            android:id="@+id/decBeverageBtn"
-            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="-" />
+            android:layout_weight="3"
+            app:bootstrapBrand="warning"
+            app:bootstrapHeading="h5"
+            app:showOutline="true"
+            android:layout_marginRight="2dp"
+            android:shadowColor="#ffffff"
+            android:shadowRadius="3"
+
+/>
+
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+
+            android:text="s.l"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/quanBeverageTxt"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+
+            app:bootstrapBrand="primary"
+            app:bootstrapHeading="h5"
+
+            android:layout_marginRight="2dp"
+            />
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:text="+"
+            android:id="@+id/incBeverageBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginRight="2dp"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="lg"
+                app:roundedCorners="true"
+        />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/decBeverageBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="-"
+            android:layout_weight="1"
+            app:roundedCorners="true"
+            app:bootstrapBrand="danger"
+            app:bootstrapSize="lg"
+            />
 
 </LinearLayout>

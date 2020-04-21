@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListOder;
 import com.example.vongcat.R;
@@ -35,9 +37,9 @@ public class MoreActivity extends AppCompatActivity {
     Item oldItem;
     ListView tableOderMoreLsv;
     Adapter tableAdapter;
-    private Button doneMoreBtn;
-    private EditText valueOderMoreTxt;
-    private Button deleteMoreBtn;
+    private BootstrapButton doneMoreBtn;
+    private BootstrapEditText valueOderMoreTxt;
+    private BootstrapButton deleteMoreBtn;
 
     List<String> arrStringNameBeve;
     ArrayAdapter<String> adapterBeve;
@@ -66,9 +68,7 @@ public class MoreActivity extends AppCompatActivity {
                 }
             }
         });
-        ListBeverage.getInstance().updateData(
-                ListBeverage.getInstance().getmJsonArray()
-        );
+        ListBeverage.getInstance().trigUpdate();
 
 
     }
@@ -131,6 +131,7 @@ public class MoreActivity extends AppCompatActivity {
         nameOderMoreSpn.setAdapter(adapterBeve);
         valueOderMoreTxt=findViewById(R.id.valueOderMoreTxt);
         valueOderMoreTxt.setText(String.valueOf(oldItem.getValue()));
+        valueOderMoreTxt.setEnabled(false);
 
 
         tableOderMoreLsv = findViewById(R.id.tableOderMoreLsv);

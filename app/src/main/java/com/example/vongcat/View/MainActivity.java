@@ -4,47 +4,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.example.vongcat.Model.ListBeverageFirebase;
-import com.example.vongcat.Model.ListExpenseFirebase;
-import com.example.vongcat.Model.ListMaterialFirebase;
-import com.example.vongcat.Model.ListOderFirebase;
-import com.example.vongcat.Model.ListSupInStoreFirebase;
-import com.example.vongcat.Model.ListTableFirebase;
 import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
-import com.example.vongcat.Presenter.ListSupInStore;
 import com.example.vongcat.Presenter.ListTable;
+import com.example.vongcat.Presenter.Supply;
 import com.example.vongcat.R;
 import com.example.vongcat.View.OderAdapter.Adapter;
 import com.example.vongcat.View.OderAdapter.Item;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
@@ -52,15 +38,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-
+//aaaaaaaaaaaaa
 public class MainActivity extends AppCompatActivity {
 
     ListView oderLsv;
@@ -69,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     FloatingActionButton addOderBtn;
-    static Button payOderBtn;
+    static BootstrapButton payOderBtn;
 
 
     static List<Item> item4Pay;
@@ -83,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
     MenuItem statusMnI = null;
     MenuItem listOderBtn = null;
     boolean showAllOder = false;
+    static boolean isSetPersistence = false;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //moi
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         statusMnI = menu.findItem(R.id.statusTxt);
         listOderBtn = menu.findItem(R.id.listOderBtn);
@@ -97,8 +80,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         item4Pay = new ArrayList<>();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!isSetPersistence)
+        {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            isSetPersistence=true;
 
+        }
+        Supply.getInstance();
+        ListBeverageFirebase.getInstance();
     }
 
     private void initSys() {
@@ -125,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 else
                     for (Item item :
                             itemPaidList) {
-                        itemOder.add(item);
+                        if(!item.getTable().contains("N"))
+                            itemOder.add(item);
                     }
                 adapterOder.notifyDataSetChanged();
 
@@ -153,10 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        ListOder.getInstance().updateData(
-                ListOder.getInstance().getmJsonObject()
-
-        );
+        ListOder.getInstance().trigUpdate();
     }
 
 
@@ -180,10 +167,10 @@ public class MainActivity extends AppCompatActivity {
                 );
                 return true;
             case R.id.storeManagerBtn:
-                Intent intent = new Intent(this,StoreManagerActivity.class);
+                Intent intent = new Intent(this,SupplyActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.logBtn:
+             case R.id.logBtn:
                 Intent i = new Intent(this,LogActivity.class);
                 startActivity(i);
                 return true;
@@ -244,18 +231,30 @@ public class MainActivity extends AppCompatActivity {
                         _sum +" k";
 
                 final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+
                 alert.setTitle("danh sách món");
                 alert.setMessage(tmp);
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
-                        for (Item item :
+                        for (final Item item :
                                 item4Pay) {
                             Task<Void> task = ListOder.getInstance().setIsPaidOder(item.getKey());
                             task.addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(alert.getContext(),"đã thanh toán xong",Toast.LENGTH_LONG).show();
+                                    JSONObject jsonObject = ListBeverage.getInstance().getUseList(item.getName());
+                                    for(int i=0;i<jsonObject.length();i++){
+                                        try {
+                                            String name = jsonObject.names().getString(i);
+                                            Supply.getInstance().exportSupply(name,jsonObject.getDouble(name));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+//
                                 }
                             });
                         }
@@ -276,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 String obj  = gson.toJson(item);
                 i.putExtra("item",obj);
                 i.putExtra("table",item.getTable());
+                item4Pay.clear();
                 v.getContext().startActivity(i);
             }
         });
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
         addEvent();
         initSys();
         ListOder.getInstance().refesh();
-
+        setSumOderTxt();
         super.onResume();
     }
 
