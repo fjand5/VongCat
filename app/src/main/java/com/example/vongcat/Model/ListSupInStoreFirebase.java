@@ -94,8 +94,6 @@ public class ListSupInStoreFirebase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("htl","quan: " + quan
-                + "name: " + name);
         if (mJsonObject == null)
             return;
 
