@@ -41,8 +41,12 @@ public class ListOderFirebase {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    JSONObject jsonObject = new JSONObject((Map)dataSnapshot.getValue());
-                    ListOder.getInstance().updateData(jsonObject);
+                JSONObject jsonObject = null;
+
+
+                    jsonObject = new JSONObject((Map)dataSnapshot.getValue());
+
+                ListOder.getInstance().updateData(jsonObject);
 
 
             }

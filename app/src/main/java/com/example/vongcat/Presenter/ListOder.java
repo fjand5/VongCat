@@ -54,11 +54,17 @@ public class ListOder {
 
         ListOderFirebase.getInstance();
     }
+    public void trigUpdate(){
+
+        if(mJsonObject != null)
+            updateData(mJsonObject);
+    }
     public void refesh(){
         ListOderFirebase.getInstance().refesh();
     }
     public void updateData(JSONObject listOderAllDay){
         mJsonObject = listOderAllDay;
+
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentMonth = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
         String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());

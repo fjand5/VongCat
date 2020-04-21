@@ -32,7 +32,7 @@ public class ListMaterialFirebase {
                 if(dataSnapshot.getValue() == null)
                     return;
                 try {
-                    JSONArray jsonArray = new JSONArray(dataSnapshot.getValue().toString());
+                    JSONArray jsonArray = new JSONArray(dataSnapshot.toString());
 
                     ListMaterial.getInstance().updateData(jsonArray);
                 } catch (JSONException e) {

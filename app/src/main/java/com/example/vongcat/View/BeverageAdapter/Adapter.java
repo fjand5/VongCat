@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListTable;
 import com.example.vongcat.R;
@@ -38,9 +40,7 @@ public class Adapter extends ArrayAdapter<Item> {
                 });
             }
         });
-        ListBeverage.getInstance().updateData(
-                ListBeverage.getInstance().getmJsonArray()
-        );
+        ListBeverage.getInstance().trigUpdate();
     }
 
     @NonNull
@@ -50,19 +50,24 @@ public class Adapter extends ArrayAdapter<Item> {
         if (v == null)
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_beverage,parent,false);
 
-        TextView nameBeverageTxt = v.findViewById(R.id.nameBeverageTxt);
-        TextView valueBeverageTxt = v.findViewById(R.id.valueBeverageTxt);
-        Button incBeverageBtn = v.findViewById(R.id.incBeverageBtn);
-        Button decBeverageBtn = v.findViewById(R.id.decBeverageBtn);
-        TextView quanBeverageTxt = v.findViewById(R.id.quanBeverageTxt);
+        BootstrapLabel nameBeverageTxt = v.findViewById(R.id.nameBeverageTxt);
+//        TextView valueBeverageTxt = v.findViewById(R.id.valueBeverageTxt);
+        BootstrapButton incBeverageBtn = v.findViewById(R.id.incBeverageBtn);
+        BootstrapButton decBeverageBtn = v.findViewById(R.id.decBeverageBtn);
+        BootstrapLabel quanBeverageTxt = v.findViewById(R.id.quanBeverageTxt);
 
 
         nameBeverageTxt.setText(getItem(position).getName());
-        nameBeverageTxt.setBackgroundColor(Color.WHITE);
+//        nameBeverageTxt.setBackgroundColor(Color.WHITE);
+try{
 
-            nameBeverageTxt.setTextColor(Color.parseColor(getItem(position).getColor()));
+    nameBeverageTxt.setTextColor(Color.parseColor(getItem(position).getColor()));
 
-        valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()) +"k");
+}catch (Exception e){
+    nameBeverageTxt.setTextColor(Color.BLACK);
+}
+
+//        valueBeverageTxt.setText(String.valueOf(getItem(position).getValue()) +"k");
 
         incBeverageBtn.setOnClickListener(new View.OnClickListener() {
             @Override

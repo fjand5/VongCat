@@ -1,5 +1,8 @@
 package com.example.vongcat.Model;
 
+import android.util.Log;
+
+import com.example.vongcat.Presenter.ListBeverage;
 import com.example.vongcat.Presenter.ListExpense;
 import com.example.vongcat.Presenter.ListOder;
 import com.google.firebase.database.DataSnapshot;
@@ -8,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,9 +41,12 @@ public class ListExpenseFirebase {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    JSONObject jsonObject = new JSONObject((Map)dataSnapshot.getValue());
-                ListExpense.getInstance().updateData(jsonObject);
-
+                try {
+                    JSONArray jsonArray = new JSONArray(dataSnapshot.getValue().toString());
+                    ListBeverage.getInstance().updateData(jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

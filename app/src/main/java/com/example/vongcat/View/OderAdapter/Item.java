@@ -1,14 +1,30 @@
 package com.example.vongcat.View.OderAdapter;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.JsonObject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
+
     String key;
     String table;
     String name;
+    String client;
     int value;
     boolean isPaid=false;
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
 
     public String getKey() {
         return key;
@@ -50,8 +66,21 @@ public class Item {
         this.name = name;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        JSONObject jsonObject =  new JSONObject();
+        try {
+            jsonObject.put("name",getName());
+            jsonObject.put("table",getTable());
+            jsonObject.put("value",getValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
 
-    public Item(String name,String table, int value, boolean isPaid) {
+    public Item(String name, String table, int value, boolean isPaid) {
         this.name = name;
         this.value = value;
         this.isPaid = isPaid;

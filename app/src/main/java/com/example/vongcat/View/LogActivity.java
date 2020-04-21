@@ -146,9 +146,7 @@ public class LogActivity extends AppCompatActivity {
 
         );
 
-        ListBeverage.getInstance().updateData(
-                ListBeverage.getInstance().getmJsonArray()
-        );
+        ListBeverage.getInstance().trigUpdate();
 
         ListExpense.getInstance().updateData(
                 ListExpense.getInstance().getmJsonObject()
@@ -202,6 +200,7 @@ public class LogActivity extends AppCompatActivity {
 
             @Override
             public void OnDataChange(JSONObject jsonObject) {
+
                 try {
                     expsToday =ListExpense.getSumValueOneDay( jsonObject.getJSONObject(year)
                             .getJSONObject(month)

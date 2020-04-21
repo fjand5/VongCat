@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:weightSum="10"
-
->
+android:padding="5dp"
+    >
     <Spinner
         android:textSize="@dimen/textSizeDefault"
         android:textAllCaps="true"
@@ -15,7 +17,7 @@
         android:id="@+id/nameOderMoreSpn"
         android:spinnerMode="dropdown"/>
 
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:textSize="@dimen/textSizeDefault"
         android:textAllCaps="true"
         android:focusedByDefault="false"
@@ -23,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
-
+        app:bootstrapSize="lg"
+        app:bootstrapBrand="info"
         android:id="@+id/valueOderMoreTxt"/>
 
     <ListView
@@ -38,22 +41,30 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:textAllCaps="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Xong"
         android:id="@+id/doneMoreBtn"
-        ></Button>
-        <Button
+        android:layout_weight="2"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        android:layout_marginRight="5dp"
+        ></com.beardedhen.androidbootstrap.BootstrapButton>
+        <com.beardedhen.androidbootstrap.BootstrapButton
 
             android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xóa "
+            android:text="Xóa"
             android:id="@+id/deleteMoreBtn"
-            ></Button>
+            android:layout_weight="1"
+            app:bootstrapBrand="danger"
+            app:bootstrapSize="lg"
+            ></com.beardedhen.androidbootstrap.BootstrapButton>
     </LinearLayout>
 </LinearLayout>

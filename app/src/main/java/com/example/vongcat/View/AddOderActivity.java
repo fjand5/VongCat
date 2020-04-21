@@ -179,13 +179,13 @@ public class AddOderActivity extends AppCompatActivity {
 
 
         beverageLsv = findViewById(R.id.beverageLsv);
-        TextView headerViewBeverageLsv = new TextView(this);
-        headerViewBeverageLsv.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                getResources().getDimensionPixelSize(R.dimen.textSizeDefault));
-        headerViewBeverageLsv.setTextColor(Color.BLACK);
-        headerViewBeverageLsv.setAllCaps(true);
-        headerViewBeverageLsv.setText("Chọn món");
-        beverageLsv.addHeaderView(headerViewBeverageLsv);
+//        TextView headerViewBeverageLsv = new TextView(this);
+//        headerViewBeverageLsv.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+//                getResources().getDimensionPixelSize(R.dimen.textSizeDefault));
+//        headerViewBeverageLsv.setTextColor(Color.BLACK);
+//        headerViewBeverageLsv.setAllCaps(true);
+//        headerViewBeverageLsv.setText("Chọn món");
+//        beverageLsv.addHeaderView(headerViewBeverageLsv);
 
         List<com.example.vongcat.View.BeverageAdapter.Item> itemsBeverage = new ArrayList<>();
         beverageAdapter = new com.example.vongcat.View.BeverageAdapter.Adapter(this,R.layout.item_beverage,itemsBeverage);

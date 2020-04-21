@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Adapter extends ArrayAdapter<Item> {
-View preView = null;
 Item selectedItem = null;
+int lastItemId=-1;
     public Adapter(@NonNull Context context, int resource, @NonNull List<Item> objects) {
         super(context, resource, objects);
 
@@ -50,37 +50,29 @@ Item selectedItem = null;
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
         View v = convertView;
+        final Item item = getItem(position);
         if (v == null)
             v = LayoutInflater.from(getContext()).inflate(R.layout.item_table,parent,false);
 
         TextView nameTableTxt=v.findViewById(R.id.nameTableTxt);
-        final CheckBox isSelectTableChb = v.findViewById(R.id.isSelectTableChb);
 
         nameTableTxt.setText(ListTable.getInstance().getListItem().get(position).getName());
+        if(item.isChoose())
+            v.setBackgroundColor(Color.BLUE);
+        else
+            v.setBackgroundColor(Color.WHITE);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                boolean isChecked = isSelectTableChb.isChecked();
-                selectedItem = getItem(position);
-                if(preView != null)
-                    preView.setBackgroundColor(Color.WHITE);
+                if(lastItemId>=0)
+                    getItem(lastItemId).setChoose(false);
+                selectedItem =item;
+                lastItemId = position;
+                item.setChoose(true);
+                view.setBackgroundColor(Color.BLUE);
+                notifyDataSetChanged();
 
-                if(isChecked){ // add
-                    isSelectTableChb.setChecked(false);
-                    notifyDataSetChanged();
-                    view.setBackgroundColor(Color.WHITE);
-
-                }else{  // remove
-                    notifyDataSetChanged();
-                    view.setBackgroundColor(Color.BLUE);
-
-                    AddOderActivity.setChoice(ListTable.getInstance().getListItem().get(position));
-                    isSelectTableChb.setChecked(true);
-
-
-                }
-                preView =view;
             }
         });
         return v;

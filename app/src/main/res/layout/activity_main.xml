@@ -15,11 +15,14 @@
         android:id="@+id/topLayoutMainActivity"
 
         >
+
         <ListView
             android:id="@+id/oderLsv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="13"/>
+            android:layout_weight="13"
+            android:paddingTop="2dp"
+            android:paddingVertical="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -27,16 +30,20 @@
             android:weightSum="5"
             android:layout_weight="2"
             android:paddingBottom="10dp">
-           <Button
+           <com.beardedhen.androidbootstrap.BootstrapButton
 
                 android:ellipsize="end"
                 android:textAllCaps="true"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
-                android:padding="5dp"
                 android:text="Thanh toán"
-                android:id="@+id/payOderBtn"/>
+                android:id="@+id/payOderBtn"
+               app:bootstrapBrand="info"
+               app:bootstrapSize="md"
+               app:roundedCorners="true"
+               android:layout_marginLeft="5dp"
+               />
 
 
         </LinearLayout>

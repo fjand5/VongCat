@@ -3,6 +3,15 @@ package com.example.vongcat.View.TableAdapter;
 public class Item {
     String name;
     int total;
+    boolean isChoose=false;
+
+    public boolean isChoose() {
+        return isChoose;
+    }
+
+    public void setChoose(boolean choose) {
+        isChoose = choose;
+    }
 
     public Item(String name, int total) {
         this.name = name;
